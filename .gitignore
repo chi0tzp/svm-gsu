@@ -1,2 +1,9 @@
 .directory
 examples/
+
+# gsvm-train
+build-gsvm-train-Desktop-Debug/
+build-gsvm-train-Desktop-Release/
+gsvm-train/gsvm-train.pro
+gsvm-train/gsvm-train.pro.user
+
