@@ -1,5 +1,7 @@
 .directory
 examples/
+visualization_tool/
+
 
 # gsvm-train
 build-gsvm-train-Desktop-Debug/
