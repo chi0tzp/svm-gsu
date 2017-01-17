@@ -1,35 +1,30 @@
-#ifndef MEANVECTOR_H
-#define MEANVECTOR_H
-
+#ifndef FULLCOVARIANCEMATRIX_H
+#define FULLCOVARIANCEMATRIX_H
 #include <string>
 #include <eigen3/Eigen/Dense>
 
 using namespace std;
 
-/** MeanVector
- *
- */
-class MeanVector
+class FullCovarianceMatrix
 {
     public:
-        /* ctor */
-        MeanVector(int, string);
+        /* Ctor */
+        FullCovarianceMatrix(int, string);
 
         /* Setters */
         void setDim(int);
         void setDocId(string);
-        void setXj(int,double);
+        void setSigma(int, int, double);
 
         /* Getters */
         int getDim();
         string getDocId();
-        Eigen::VectorXd getX();
+        Eigen::MatrixXd getSigma();
 
     private:
         int dim;
         string doc_id;
-        Eigen::VectorXd x;
-
+        Eigen::MatrixXd Sigma;
 };
 
-#endif // MEANVECTOR_H
+#endif // FULLCOVARIANCEMATRIX_H
