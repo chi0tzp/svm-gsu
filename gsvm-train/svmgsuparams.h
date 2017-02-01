@@ -22,7 +22,7 @@ class SvmGsuParams
         double getP();
 
         /* Member functions */
-        void parseCommandLine( int, char**, char*, char*, char*, char*, char* );
+        void parseCommandLine(int, char**, char* , char*, char*, char*);
 
 
     private:

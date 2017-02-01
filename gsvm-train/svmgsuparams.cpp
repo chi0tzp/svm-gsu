@@ -55,8 +55,7 @@ void SvmGsuParams::parseCommandLine(int argc,
                                     char* mean_vectors_filename,
                                     char* labels_filename,
                                     char* covariance_matrices_filename,
-                                    char* model_filename,
-                                    char* obj_filename)
+                                    char* model_filename)
 {
     int i;
     // -- Parse options --
@@ -96,10 +95,6 @@ void SvmGsuParams::parseCommandLine(int argc,
             /* Select number of sampling size k for SGD */
             case 'k':
                 k = atoi(argv[i]);
-                break;
-            /* Objective function values file */
-            case 'j':
-                strcpy(obj_filename, argv[i]);
                 break;
             /* Verbose mode: -v {0,1} (Default: 1) */
             case 'v':
@@ -142,8 +137,7 @@ void SvmGsuParams::exitWithHelp()
              "\t+l <lambda>: Set the parameter lambda of SVM-GSU (default 1.0)\n"
              "\t+g <gamma>: Set the parameter gamma (default 1/dim)\n"
              "\t+T <iter>: Set number of SGD iterations\n"
-             "\t+k <k>: Set SGD sampling size\n"
-             "\t+j <obj_file>: Objective function values\n");
+             "\t+k <k>: Set SGD sampling size\n");
     throw std::runtime_error("exit with help");
 }
 
