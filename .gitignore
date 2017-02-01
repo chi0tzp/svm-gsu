@@ -1,7 +1,7 @@
 .directory
 examples/
 visualization_tool/
-
+mnist_exp/
 
 # gsvm-train
 build-gsvm-train-Desktop-Debug/
@@ -9,3 +9,8 @@ build-gsvm-train-Desktop-Release/
 gsvm-train/gsvm-train.pro
 gsvm-train/gsvm-train.pro.user
 
+# gsvm-predict
+build-gsvm-predict-Desktop-Debug/
+build-gsvm-predict-Desktop-Release/
+gsvm-predict/gsvm-predict.pro
+gsvm-predict/gsvm-predict.pro.user
