@@ -63,39 +63,61 @@ void SvmGsuProblem::readInputDataFull(char* mean_vectors_filename,
     Label cur_label;
     double label_tmp;
     /* Fill labels */
-    while ( getline(labels_file,line) )
+    while (getline(labels_file, line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
-        label_tmp  = stod( tokens[1] );
-        cur_label.setDocId( doc_id_tmp );
+        label_tmp = stod(tokens[1]);
+        cur_label.setDocId(doc_id_tmp);
         cur_label.setY(label_tmp);
-        labels.push_back( cur_label );
-        labels_doc_ids.push_back( doc_id_tmp );
+        labels.push_back(cur_label);
+        labels_doc_ids.push_back(doc_id_tmp);
     }
     labels_file.close();
 
 
     /*******************************************************************************
-     *                           Read mean vectors file                            *
+     *                       Find Input space dimensionality                       *
      *******************************************************************************/
-    ifstream mean_vectors_file( mean_vectors_filename, ifstream::in );
     vector<int> dims;
 
-    /* Find maximum dim in input vectors (input space dimension) */
-    while ( getline(mean_vectors_file,line) )
+    /* Mean vectors */
+    ifstream mean_vectors_file(mean_vectors_filename, ifstream::in);
+    while (getline(mean_vectors_file, line))
     {
         tokenize(line, tokens, " ");
-        dims.push_back( tokens.size()-1 );
+        for (unsigned t=1; t<tokens.size(); t++)
+        {
+            tokenize(tokens[t], elem, ":");
+            dims.push_back(stoi(elem[0]));
+        }
+    }
+
+    /* Covariance matrices */
+    ifstream covariance_matrices_file(covariance_matrices_filename, ifstream::in);
+    while (getline(covariance_matrices_file, line))
+    {
+        tokenize(line, tokens, " ");
+        doc_id_tmp = tokens[0];
+        for (unsigned t=1; t<tokens.size(); t++)
+        {
+            tokenize(tokens[t], elem, ":");
+            tokenize(elem[0], indices, ",");
+            int row_idx = stoi(indices[0]);
+            int col_idx = stoi(indices[1]);
+            dims.push_back(std::max(row_idx, col_idx));
+        }
     }
     auto max_dim = max_element(dims.begin(), dims.end());
     dim = *max_dim;
 
 
-    /* Fill mean_vectors */
-    mean_vectors_file.clear();            // clear fail and eof bits
-    mean_vectors_file.seekg(0, ios::beg); // back to the start!
-    while ( getline(mean_vectors_file,line) )
+    /*******************************************************************************
+     *                           Read mean vectors file                            *
+     *******************************************************************************/
+    mean_vectors_file.clear();
+    mean_vectors_file.seekg(0, ios::beg);
+    while (getline(mean_vectors_file, line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
@@ -110,32 +132,31 @@ void SvmGsuProblem::readInputDataFull(char* mean_vectors_filename,
         mean_vectors.push_back( cur_mean_vector );
         mean_vectors_doc_ids.push_back( doc_id_tmp );
     }
-    mean_vectors_file.close();
-
 
     /*******************************************************************************
      *                     Read full covariance matrices file                      *
      *******************************************************************************/
-    ifstream covariance_matrices_file( covariance_matrices_filename, ifstream::in );
+    covariance_matrices_file.clear();
+    covariance_matrices_file.seekg(0, ios::beg);
     /* Fill covariance_matrices */
-    while ( getline(covariance_matrices_file,line) )
+    while (getline(covariance_matrices_file, line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
-        FullCovarianceMatrix cur_covariance_matrix( dim, doc_id_tmp );
-        for ( unsigned t=1; t<tokens.size(); t++ )
+        FullCovarianceMatrix cur_covariance_matrix(dim, doc_id_tmp);
+        for (unsigned t=1; t<tokens.size(); t++)
         {
-            tokenize( tokens[t], elem, ":" );
-            string temp = elem[0];
-            double val  = stod( elem[1] );
-            tokenize( temp, indices, "," );
-            int row_idx = stoi( indices[0] );
-            int col_idx = stoi( indices[1] );
-            cur_covariance_matrix.setSigma( row_idx-1, col_idx-1, val );
+            tokenize(tokens[t], elem, ":");
+            tokenize(elem[0], indices, ",");
+            int row_idx = stoi(indices[0]);
+            int col_idx = stoi(indices[1]);
+            double val = stod(elem[1]);
+            cur_covariance_matrix.setSigma(row_idx-1, col_idx-1, val);
         }
-        covariance_matrices.push_back( cur_covariance_matrix );
-        covariance_matrices_doc_ids.push_back( doc_id_tmp );
+        covariance_matrices.push_back(cur_covariance_matrix);
+        covariance_matrices_doc_ids.push_back(doc_id_tmp);
     }
+    mean_vectors_file.close();
     covariance_matrices_file.close();
 
     /* Sort labels_doc_ids, mean_vectors_doc_ids, covariance_matrices_doc_ids by doc_id */
@@ -221,95 +242,113 @@ void SvmGsuProblem::readInputDataDiag(char* mean_vectors_filename,
     Label cur_label;
     double label_tmp;
     /* Fill labels */
-    while ( getline(labels_file,line) )
+    while (getline(labels_file,line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
-        label_tmp  = stod( tokens[1] );
-        cur_label.setDocId( doc_id_tmp );
+        label_tmp = stod(tokens[1]);
+        cur_label.setDocId(doc_id_tmp);
         cur_label.setY(label_tmp);
-        labels.push_back( cur_label );
-        labels_doc_ids.push_back( doc_id_tmp );
+        labels.push_back(cur_label);
+        labels_doc_ids.push_back(doc_id_tmp);
     }
     labels_file.close();
 
-
     /*******************************************************************************
-     *                           Read mean vectors file                            *
+     *                       Find Input space dimensionality                       *
      *******************************************************************************/
-    ifstream mean_vectors_file( mean_vectors_filename, ifstream::in );
     vector<int> dims;
 
-    /* Find maximum dim in input vectors (input space dimension) */
-    while ( getline(mean_vectors_file,line) )
+    /* Mean vectors */
+    ifstream mean_vectors_file(mean_vectors_filename, ifstream::in);
+    while (getline(mean_vectors_file,line))
     {
         tokenize(line, tokens, " ");
-        dims.push_back( tokens.size()-1 );
+        for (unsigned t=1; t<tokens.size(); t++)
+        {
+            tokenize(tokens[t], elem, ":");
+            dims.push_back(stoi(elem[0]));
+        }
+    }
+
+    /* Covariance matrices */
+    ifstream covariance_matrices_file(covariance_matrices_filename, ifstream::in);
+    while (getline(covariance_matrices_file, line))
+    {
+        tokenize(line, tokens, " ");
+        doc_id_tmp = tokens[0];
+        DiagCovarianceMatrix cur_covariance_matrix(dim, doc_id_tmp);
+        for (unsigned t=1; t<tokens.size(); t++)
+        {
+            tokenize(tokens[t], elem, ":");
+            string temp = elem[0];
+            tokenize(temp, indices, ",");
+            int row_idx = stoi(indices[0]);
+            int col_idx = stoi(indices[1]);
+            if (row_idx == col_idx)
+                dims.push_back(row_idx);
+        }
     }
     auto max_dim = max_element(dims.begin(), dims.end());
     dim = *max_dim;
 
 
+    /*******************************************************************************
+     *                           Read mean vectors file                            *
+     *******************************************************************************/
+    mean_vectors_file.clear();
+    mean_vectors_file.seekg(0, ios::beg);
     /* Fill mean_vectors */
-    mean_vectors_file.clear();            // clear fail and eof bits
-    mean_vectors_file.seekg(0, ios::beg); // back to the start!
-    while ( getline(mean_vectors_file,line) )
+    while (getline(mean_vectors_file,line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
         MeanVector cur_mean_vector(dim, doc_id_tmp);
-        for ( unsigned t=1; t<tokens.size(); t++ )
+        for (unsigned t=1; t<tokens.size(); t++)
         {
-            tokenize( tokens[t], elem, ":" );
-            int idx    = stoi( elem[0] );
-            double val = stod( elem[1] );
-            cur_mean_vector.setXj( idx-1, val );
+            tokenize(tokens[t], elem, ":");
+            int idx = stoi(elem[0]);
+            double val = stod(elem[1]);
+            cur_mean_vector.setXj(idx-1, val);
         }
         mean_vectors.push_back( cur_mean_vector );
         mean_vectors_doc_ids.push_back( doc_id_tmp );
     }
-    mean_vectors_file.close();
 
 
     /*******************************************************************************
      *                      Read covariance matrices file                          *
      *******************************************************************************/
-    ifstream covariance_matrices_file( covariance_matrices_filename, ifstream::in );
-
+    covariance_matrices_file.clear();
+    covariance_matrices_file.seekg(0, ios::beg);
     /* Fill covariance_matrices */
-    while ( getline(covariance_matrices_file,line) )
+    while (getline(covariance_matrices_file,line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
-        DiagCovarianceMatrix cur_covariance_matrix( dim, doc_id_tmp );
-        for ( unsigned t=1; t<tokens.size(); t++ )
+        DiagCovarianceMatrix cur_covariance_matrix(dim, doc_id_tmp);
+        for (unsigned t=1; t<tokens.size(); t++)
         {
-            tokenize( tokens[t], elem, ":" );
+            tokenize(tokens[t], elem, ":");
             string temp = elem[0];
-            double val  = stod( elem[1] );
-            tokenize( temp, indices, "," );
-            int row_idx = stoi( indices[0] );
-            int col_idx = stoi( indices[1] );
-
-            if (row_idx != col_idx)
-            {
-                // Error! Not diagonal matrix found.
-            }
-            cur_covariance_matrix.setSigma( row_idx-1, val );
+            double val = stod(elem[1]);
+            tokenize(temp, indices, ",");
+            cur_covariance_matrix.setSigma(stoi(indices[0])-1, val);
         }
-        covariance_matrices.push_back( cur_covariance_matrix );
-        covariance_matrices_doc_ids.push_back( doc_id_tmp );
+        covariance_matrices.push_back(cur_covariance_matrix);
+        covariance_matrices_doc_ids.push_back(doc_id_tmp);
     }
+    mean_vectors_file.close();
     covariance_matrices_file.close();
 
     /* Sort labels_doc_ids, mean_vectors_doc_ids, covariance_matrices_doc_ids by doc_id */
-    sort( labels_doc_ids.begin(), labels_doc_ids.end() );
-    sort( mean_vectors_doc_ids.begin(), mean_vectors_doc_ids.end() );
-    sort( covariance_matrices_doc_ids.begin(), covariance_matrices_doc_ids.end() );
+    sort(labels_doc_ids.begin(), labels_doc_ids.end());
+    sort(mean_vectors_doc_ids.begin(), mean_vectors_doc_ids.end());
+    sort(covariance_matrices_doc_ids.begin(), covariance_matrices_doc_ids.end());
 
     /* Find intersection between labels_doc_ids, mean_vectors_doc_ids, covariance_matrices_doc_ids based on doc_id */
-    vector<string> labels_mean_intersect     = findDocIdsIntersection( labels_doc_ids, mean_vectors_doc_ids );
-    vector<string> labels_mean_cov_intersect = findDocIdsIntersection( labels_mean_intersect, covariance_matrices_doc_ids );
+    vector<string> labels_mean_intersect = findDocIdsIntersection(labels_doc_ids, mean_vectors_doc_ids);
+    vector<string> labels_mean_cov_intersect = findDocIdsIntersection(labels_mean_intersect, covariance_matrices_doc_ids);
 
     /* Initialize SVM-GSU problem */
     l = labels_mean_cov_intersect.size();
@@ -323,18 +362,18 @@ void SvmGsuProblem::readInputDataDiag(char* mean_vectors_filename,
         // Get label
         for (unsigned j=0; j<labels.size(); j++)
         {
-            if ( labels[j].getDocId().compare(doc_id) == 0 )
+            if (labels[j].getDocId().compare(doc_id) == 0)
             {
-                y.push_back( getLabel( labels[j].getY() ) );
+                y.push_back(getLabel(labels[j].getY()));
                 break;
             }
         }
         // Get mean vector
         for (unsigned j=0; j<mean_vectors.size(); j++)
         {
-            if ( mean_vectors[j].getDocId().compare(doc_id) == 0 )
+            if (mean_vectors[j].getDocId().compare(doc_id) == 0)
             {
-                x.push_back( mean_vectors[j].getX() );
+                x.push_back(mean_vectors[j].getX());
                 X.conservativeResize(row+1,dim);
                 X.row(row) = mean_vectors[j].getX();
                 row++;
@@ -344,9 +383,9 @@ void SvmGsuProblem::readInputDataDiag(char* mean_vectors_filename,
         // Get covariance matrix
         for (unsigned j=0; j<covariance_matrices.size(); j++)
         {
-            if ( covariance_matrices[j].getDocId().compare(doc_id) == 0 )
+            if (covariance_matrices[j].getDocId().compare(doc_id) == 0)
             {
-                Sigma_xd.push_back( covariance_matrices[j].getSigma() );
+                Sigma_xd.push_back(covariance_matrices[j].getSigma());
                 break;
             }
         }
@@ -383,15 +422,15 @@ void SvmGsuProblem::readInputDataIso(char* mean_vectors_filename,
     double label_tmp;
 
     /* Fill labels */
-    while ( getline(labels_file,line) )
+    while (getline(labels_file,line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
-        label_tmp  = stod( tokens[1] );
-        cur_label.setDocId( doc_id_tmp );
+        label_tmp = stod(tokens[1]);
+        cur_label.setDocId(doc_id_tmp);
         cur_label.setY(label_tmp);
-        labels.push_back( cur_label );
-        labels_doc_ids.push_back( doc_id_tmp );
+        labels.push_back(cur_label);
+        labels_doc_ids.push_back(doc_id_tmp);
     }
     labels_file.close();
 
@@ -399,14 +438,14 @@ void SvmGsuProblem::readInputDataIso(char* mean_vectors_filename,
     /*******************************************************************************
      *                           Read mean vectors file                            *
      *******************************************************************************/
-    ifstream mean_vectors_file( mean_vectors_filename, ifstream::in );
+    ifstream mean_vectors_file(mean_vectors_filename, ifstream::in);
     vector<int> dims;
 
     /* Find maximum dim in input vectors (input space dimension) */
-    while ( getline(mean_vectors_file,line) )
+    while (getline(mean_vectors_file,line))
     {
         tokenize(line, tokens, " ");
-        dims.push_back( tokens.size()-1 );
+        dims.push_back(tokens.size()-1);
     }
     auto max_dim = max_element(dims.begin(), dims.end());
     dim = *max_dim;
@@ -414,20 +453,20 @@ void SvmGsuProblem::readInputDataIso(char* mean_vectors_filename,
     /* Fill mean_vectors */
     mean_vectors_file.clear();            // clear fail and eof bits
     mean_vectors_file.seekg(0, ios::beg); // back to the start!
-    while ( getline(mean_vectors_file,line) )
+    while (getline(mean_vectors_file,line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
         MeanVector cur_mean_vector(dim, doc_id_tmp);
-        for ( unsigned t=1; t<tokens.size(); t++ )
+        for (unsigned t=1; t<tokens.size(); t++)
         {
-            tokenize( tokens[t], elem, ":" );
-            int idx    = stoi( elem[0] );
-            double val = stod( elem[1] );
-            cur_mean_vector.setXj( idx-1, val );
+            tokenize(tokens[t], elem, ":");
+            int idx = stoi(elem[0]);
+            double val = stod(elem[1]);
+            cur_mean_vector.setXj(idx-1, val);
         }
-        mean_vectors.push_back( cur_mean_vector );
-        mean_vectors_doc_ids.push_back( doc_id_tmp );
+        mean_vectors.push_back(cur_mean_vector);
+        mean_vectors_doc_ids.push_back(doc_id_tmp);
     }
     mean_vectors_file.close();
 
@@ -435,43 +474,43 @@ void SvmGsuProblem::readInputDataIso(char* mean_vectors_filename,
     /*******************************************************************************
      *                   Read isotropic covariance matrices file                   *
      *******************************************************************************/
-    ifstream covariance_matrices_file( covariance_matrices_filename, ifstream::in );
+    ifstream covariance_matrices_file(covariance_matrices_filename, ifstream::in);
 
     /* Fill covariance_matrices */
-    while ( getline(covariance_matrices_file,line) )
+    while (getline(covariance_matrices_file,line))
     {
         tokenize(line, tokens, " ");
         doc_id_tmp = tokens[0];
-        IsoCovarianceMatrix cur_covariance_matrix( doc_id_tmp );
-        for ( unsigned t=1; t<tokens.size(); t++ )
+        IsoCovarianceMatrix cur_covariance_matrix(doc_id_tmp);
+        for (unsigned t=1; t<tokens.size(); t++)
         {
-            tokenize( tokens[t], elem, ":" );
+            tokenize(tokens[t], elem, ":");
             string temp = elem[0];
-            double val  = stod( elem[1] );
-            tokenize( temp, indices, "," );
-            int row_idx = stoi( indices[0] );
-            int col_idx = stoi( indices[1] );
+            double val = stod(elem[1]);
+            tokenize(temp, indices, ",");
+            int row_idx = stoi(indices[0]);
+            int col_idx = stoi(indices[1]);
 
             if (row_idx != col_idx)
             {
                 // Error! Not diagonal matrix found.
             }
-            cur_covariance_matrix.setSigma( val );
+            cur_covariance_matrix.setSigma(val);
             //break;
         }
-        covariance_matrices.push_back( cur_covariance_matrix );
-        covariance_matrices_doc_ids.push_back( doc_id_tmp );
+        covariance_matrices.push_back(cur_covariance_matrix);
+        covariance_matrices_doc_ids.push_back(doc_id_tmp);
     }
     covariance_matrices_file.close();
 
     /* Sort labels_doc_ids, mean_vectors_doc_ids, covariance_matrices_doc_ids by doc_id */
-    sort( labels_doc_ids.begin(), labels_doc_ids.end() );
-    sort( mean_vectors_doc_ids.begin(), mean_vectors_doc_ids.end() );
-    sort( covariance_matrices_doc_ids.begin(), covariance_matrices_doc_ids.end() );
+    sort(labels_doc_ids.begin(), labels_doc_ids.end());
+    sort(mean_vectors_doc_ids.begin(), mean_vectors_doc_ids.end());
+    sort(covariance_matrices_doc_ids.begin(), covariance_matrices_doc_ids.end());
 
     /* Find intersection between labels_doc_ids, mean_vectors_doc_ids, covariance_matrices_doc_ids based on doc_id */
-    vector<string> labels_mean_intersect     = findDocIdsIntersection( labels_doc_ids, mean_vectors_doc_ids );
-    vector<string> labels_mean_cov_intersect = findDocIdsIntersection( labels_mean_intersect, covariance_matrices_doc_ids );
+    vector<string> labels_mean_intersect = findDocIdsIntersection(labels_doc_ids, mean_vectors_doc_ids);
+    vector<string> labels_mean_cov_intersect = findDocIdsIntersection(labels_mean_intersect, covariance_matrices_doc_ids);
 
     /* Initialize SVM-GSU problem */
     l = labels_mean_cov_intersect.size();
@@ -485,18 +524,18 @@ void SvmGsuProblem::readInputDataIso(char* mean_vectors_filename,
         // Get label
         for (unsigned j=0; j<labels.size(); j++)
         {
-            if ( labels[j].getDocId().compare(doc_id) == 0 )
+            if (labels[j].getDocId().compare(doc_id) == 0)
             {
-                y.push_back( getLabel( labels[j].getY() ) );
+                y.push_back(getLabel(labels[j].getY()));
                 break;
             }
         }
         // Get mean vector
         for (unsigned j=0; j<mean_vectors.size(); j++)
         {
-            if ( mean_vectors[j].getDocId().compare(doc_id) == 0 )
+            if (mean_vectors[j].getDocId().compare(doc_id) == 0)
             {
-                x.push_back( mean_vectors[j].getX() );
+                x.push_back(mean_vectors[j].getX());
                 X.conservativeResize(row+1,dim);
                 X.row(row) = mean_vectors[j].getX();
                 row++;
@@ -506,9 +545,9 @@ void SvmGsuProblem::readInputDataIso(char* mean_vectors_filename,
         // Get covariance matrix
         for (unsigned j=0; j<covariance_matrices.size(); j++)
         {
-            if ( covariance_matrices[j].getDocId().compare(doc_id) == 0 )
+            if (covariance_matrices[j].getDocId().compare(doc_id) == 0)
             {
-                Sigma_xi.push_back( covariance_matrices[j].getSigma() );
+                Sigma_xi.push_back(covariance_matrices[j].getSigma());
                 break;
             }
         }
@@ -594,14 +633,7 @@ void SvmGsuProblem::eigenDecomp()
         default:
             break;
     }
-
-
-
-
-
-
 }
-
 
 
 
