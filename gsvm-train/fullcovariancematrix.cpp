@@ -6,6 +6,7 @@ FullCovarianceMatrix::FullCovarianceMatrix(int d, string id)
     dim      = d;
     doc_id   = id;
     Sigma.resize(d,d);
+    Sigma.setZero(d,d);
 }
 
 /* covariance_matrix: setters */

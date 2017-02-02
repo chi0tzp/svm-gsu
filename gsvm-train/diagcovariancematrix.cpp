@@ -7,6 +7,7 @@ DiagCovarianceMatrix::DiagCovarianceMatrix(int d, string id)
     dim    = d;
     doc_id = id;
     Sigma.resize(d);
+    Sigma.setZero(d);
 }
 
 /* covariance_matrix: setters */
