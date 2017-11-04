@@ -15,6 +15,14 @@ The code is build in C++11 using the Eigen ...
 
 #### 1. Linear SVM with Gaussian Sample Uncertainty (LSVM-GSU) [1]
 
+##### 1.1 Definition
+
+###### 1.1.1 AAA
+
+
+
+
+
 
 
 #### 2. Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU) [2,3]
