@@ -15,7 +15,9 @@ The code is built in C++11 using the Eigen ...
 
 #### 1. Linear SVM with Gaussian Sample Uncertainty (LSVM-GSU) [1]
 
-<img src="images/svmgsu_motivation.jpg" align="middle" width="300" >
+<p align="center">
+  <img src="images/svmgsu_motivation.jpg" alt="SVM-GSU's motivation"/>
+</p>
 
 
 ##### 1.1 Definition
