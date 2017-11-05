@@ -123,7 +123,7 @@ A visualization tool build in Matlab is available under XXX/
 
 
 
-# References
+## References
 
 [1] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Linear Maximum Margin Classifier for Learning from Uncertain Data." *IEEE Transactions on pattern analysis and machine intelligence* XX.YY (2017): pppp-pppp.
 
