@@ -2,7 +2,7 @@
 
 A C++ framework for training/testing Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).
 
-This is the implementation code for the SVM with Gaussian Sample Uncertainty (LSVM-GSU), whose linear variant was first proposed in [1], and its kernel version (Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU)) was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](##references).
+This is the implementation code for the SVM with Gaussian Sample Uncertainty (LSVM-GSU), whose linear variant was first proposed in [1], and its kernel version (Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU)) was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](#references).
 
 ## 0. Prerequisites and build guidelines
 
@@ -123,7 +123,7 @@ A visualization tool build in Matlab is available under XXX/
 
 
 
-##References
+# References
 
 [1] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Linear Maximum Margin Classifier for Learning from Uncertain Data." *IEEE Transactions on pattern analysis and machine intelligence* XX.YY (2017): pppp-pppp.
 
