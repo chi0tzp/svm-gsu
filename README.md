@@ -6,7 +6,7 @@ This is the implementation code for the Linear SVM Gaussian Sample Uncertainty (
 
 #### 0. Prerequisites
 
-The code is build in C++11 using the Eigen ...
+The code is built in C++11 using the Eigen ...
 
     - Eigen ??.??
     - ???
@@ -14,6 +14,16 @@ The code is build in C++11 using the Eigen ...
 ​    
 
 #### 1. Linear SVM with Gaussian Sample Uncertainty (LSVM-GSU) [1]
+
+
+
+![Motivation](svmgsu_motivation.png)
+
+
+
+
+
+
 
 ##### 1.1 Definition
 
@@ -27,11 +37,13 @@ The code is build in C++11 using the Eigen ...
 
 #### 2. Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU) [2,3]
 
+Not available yet...
 
 
 
+#### 3. Visualization of LSVM-GSU/KSVM-iGSU
 
-
+A visualization tool build in Matlab is available under XXX/
 
 
 
