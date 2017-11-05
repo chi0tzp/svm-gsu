@@ -17,13 +17,9 @@ The code is built in C++11 using the Eigen ...
 
 
 
-```
-![Alt text](images/svmgsu_motivation.png?raw=true "Linear SVM-GSU motivation")
-```
 
 
-
-
+![](images/svmgsu_motivation.jpg?raw=true "Linear SVM-GSU motivation")
 
 
 
