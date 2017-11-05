@@ -159,7 +159,7 @@ Options:
 
 ### Toy example
 
-In [toy_example]()
+In [toy_example](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example for testing the ...
 
 
 
