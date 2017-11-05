@@ -2,7 +2,7 @@
 
 A C++ framework for training/testing Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).
 
-This is the implementation code for the Linear SVM Gaussian Sample Uncertainty (LSVM-GSU), which was first proposed in [1], and the Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU), proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate references (see at the end of this document).
+This is the implementation code for the SVM with Gaussian Sample Uncertainty (LSVM-GSU), whose linear variant was first proposed in [1], and its kernel version (Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU)) was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](##References).
 
 ## 0. Prerequisites and build guidelines
 
@@ -17,9 +17,81 @@ The code is built in C++11 using the [Eigen](http://eigen.tuxfamily.org/index.ph
 
 ### Windows
 
+Not available yet.
+
 ## 1. Usage
 
+### gsvm-train
+
+Usage:
+
+~~~
+gsvm-train [options] <mean_vectors> <ground_truth> <covariance_matrices> <model_file>
+~~~
+
+Options:
+
+~~~
++v <verbose_mode>: Verbose mode (default: 0)
++t <kernel_type>: Set type of kernel function (default 0)
+	0 -- Linear kernel
+    2 -- Radial Basis Function (RBF) kernel
++d <cov_mat>: Select covariance matrices type (default: 0)
+	0 -- Full covariance matrices
+	1 -- Diagonal covariance matrices
+	3 -- Isotropic covariance matrices
++l <lambda>: Set the parameter lambda of SVM-GSU (default 1.0)
++g <gamma>: Set the parameter gamma (default 1.0/dim)
++T <iter>: Set number of SGD iterations
++k <k>: Set SGD sampling size
+~~~
+
+
+
+### gsvm-predict
+
+Usage:
+
+~~~
+gsvm-predict [options] <mean_vectors> <model_file> <output_file>
+~~~
+
+Options:
+
+~~~
+-v <verbose_mode>: Verbose mode (default: 0)
+-t <ground_truth>: Select ground truth file
+-m <evaluation_metrics>: Evaluation metrics output file
+~~~
+
+
+
 ## 2. Files format
+
+The training set of SVM-GSU consists of the following three parts:
+
+- A set of vectors that correspond to the **mean vectors** of the input data (input Gaussian distributions),
+- A set of matrices that correspond to the **covariance matrices** of the input data (input Gaussian distributions), and 
+- A set of binary **ground truth** labels that correspond to input data class labels.
+
+We adopt a [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)-like file format for the input data files. More specifically, for the above data files, we follow the formats described below. 
+
+### Mean vectors file format
+
+This is a plain text file
+
+~~~
+<doc_id_i> 1:<value> 2:<value> ... j:<value> ... n:<value>\n
+~~~
+
+
+
+### Ground truth file format
+
+### Covariance matrices file format
+
+
+
 
 
 
@@ -51,7 +123,7 @@ A visualization tool build in Matlab is available under XXX/
 
 
 
-## References
+##References
 
 [1] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Linear Maximum Margin Classifier for Learning from Uncertain Data." *IEEE Transactions on pattern analysis and machine intelligence* XX.YY (2017): pppp-pppp.
 
