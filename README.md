@@ -6,21 +6,38 @@ This is the implementation code for the Linear SVM Gaussian Sample Uncertainty (
 
 #### 0. Prerequisites
 
-The code is built in C++11 using the Eigen ...
+The code is built in C++11 using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library.
 
     - Eigen ??.??
     - ???
+
+##### Linux
+
+##### Windows
+
+
+
+
+
+
 
 ​    
 
 #### 1. Linear SVM with Gaussian Sample Uncertainty (LSVM-GSU) [1]
 
 <p align="center">
-  <img src="images/svmgsu_motivation.jpg" alt="SVM-GSU's motivation" width="300"/>
+  <img src="images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
 </p>
 
+##### 1.1 Motivation
 
-##### 1.1 Definition
+An illustration is given in Fig.~\ref{fig:svm_gsu}, where the shaded regions are bounded by iso-density loci of the Gaussians, and the means of the Gaussians for examples of the positive and negative classes are located at $\times$ and $\circ$ respectively. A classical SVM formulation would consider only the means of the Gaussians as training examples and, by optimizing the soft margin using the hinge loss and a regularization term, would arrive at the separating hyperplane depicted by the dashed line. In our formulation, we optimize for the soft margin using the same regularization but the {\em expected} value of the hinge loss, where the expectation is taken under the given Gaussians. By doing so, we take into consideration the various uncertainties and arrive at a drastically different decision border, depicted by the solid line in Fig.~\ref{fig:svm_gsu}. It is worth noting that one would arrive at the same decision border with the classical SVM trained on a dataset containing samples drawn from the Gaussians in question, as the number of samples tend to infinity. In addition, our method degenerates to a classical SVM in the case that all of the Gaussians are isotropic with a variance that tends to zero.
+
+
+
+
+
+
 
 ###### 1.1.1 AAA
 
