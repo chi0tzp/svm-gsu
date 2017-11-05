@@ -4,6 +4,12 @@ A C++ framework for training/testing Support Vector Machine with Gaussian Sample
 
 This is the implementation code for the SVM with Gaussian Sample Uncertainty (LSVM-GSU), whose linear variant was first proposed in [1], and its kernel version (Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU)) was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](#references).
 
+Below, there are detailed guidelines on how to [build](prerequisites-and-build-guidelines) the code,  [??](files-format) the input data files to the appropriate format, and [use](1.-usage) the built binaries for training and/or testing SVM-GSU.
+
+
+
+
+
 ## 0. Prerequisites and build guidelines
 
 The code is built in C++11 using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. In order to build the code, you need to 
