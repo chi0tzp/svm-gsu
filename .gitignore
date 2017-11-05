@@ -1,7 +1,12 @@
 .directory
+*~
+tmp/
 examples/
 visualization_tool/
 mnist_exp/
+
+
+
 
 # gsvm-train
 build-gsvm-train-Desktop-Debug/
