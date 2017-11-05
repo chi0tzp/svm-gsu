@@ -4,7 +4,7 @@ A C++ framework for training/testing Support Vector Machine with Gaussian Sample
 
 This is the implementation code for the SVM with Gaussian Sample Uncertainty (LSVM-GSU), whose linear variant was first proposed in [1], and its kernel version (Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU)) was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](#references).
 
-Below, there are detailed guidelines on how to [build](#0.-prerequisites-and-build-guidelines) the code,  [??](files-format) the input data files to the appropriate format, and [use](1.-usage) the built binaries for training and/or testing SVM-GSU.
+Below, there are detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format, and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.
 
 
 
@@ -25,7 +25,37 @@ The code is built in C++11 using the [Eigen](http://eigen.tuxfamily.org/index.ph
 
 Not available yet.
 
-## 1. Usage
+
+
+## 1. Files format
+
+The training set of SVM-GSU consists of the following three parts:
+
+- A set of vectors that correspond to the **mean vectors** of the input data (input Gaussian distributions),
+- A set of matrices that correspond to the **covariance matrices** of the input data (input Gaussian distributions), and 
+- A set of binary **ground truth** labels that correspond to input data class labels.
+
+We adopt a [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)-like file format for the input data files. More specifically, for the above data files, we follow the formats described below. 
+
+### Mean vectors file format
+
+This is a plain text file
+
+```
+<doc_id_i> 1:<value> 2:<value> ... j:<value> ... n:<value>\n
+```
+
+
+
+### Ground truth file format
+
+### Covariance matrices file format
+
+
+
+## 2. Usage
+
+The framework consists of two basic parts, one for training a SVM-GSU model [(gsvm-train)](#gsvm-train), and one for evaluating a trained model on a given dataset [(gsvm-predict)](#gsvm-predict). Their basic usage is described below. In any case, ??? using the `-h` command line arguments (i.e., `gsvm-train -h` and `gsvm-predict -h`).
 
 ### gsvm-train
 
@@ -72,29 +102,7 @@ Options:
 
 
 
-## 2. Files format
-
-The training set of SVM-GSU consists of the following three parts:
-
-- A set of vectors that correspond to the **mean vectors** of the input data (input Gaussian distributions),
-- A set of matrices that correspond to the **covariance matrices** of the input data (input Gaussian distributions), and 
-- A set of binary **ground truth** labels that correspond to input data class labels.
-
-We adopt a [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)-like file format for the input data files. More specifically, for the above data files, we follow the formats described below. 
-
-### Mean vectors file format
-
-This is a plain text file
-
-~~~
-<doc_id_i> 1:<value> 2:<value> ... j:<value> ... n:<value>\n
-~~~
-
-
-
-### Ground truth file format
-
-### Covariance matrices file format
+### 
 
 
 
