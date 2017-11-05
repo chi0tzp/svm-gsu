@@ -4,7 +4,7 @@ A C++ framework for training/testing the Support Vector Machine with Gaussian Sa
 
 This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose linear variant (LSVM-GSU) was first proposed in [1], and its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU), was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references).
 
-Below, there are given detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) written in Matlab is also given, along with some illustrative 2D toy examples. Short presentations of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-2) are given below. For more detailed discussion of the above classifiers, please refer to the corresponding [papers](#references).
+Below, there are given detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [toy example](#toy-example) is given as a +++ .... A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) written in Matlab is also given, along with some illustrative 2D toy examples. Short presentations of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-2) are given below. For more detailed discussion of the above classifiers, please refer to the corresponding [papers](#references).
 
 
 
@@ -23,7 +23,7 @@ The framework was originally built in GNU/Linux (and has been tested on ArchLinu
 
 ### Windows
 
-Not available yet.
+*Not available yet.*
 
 
 
@@ -136,7 +136,7 @@ Options:
 
 
 
-### Minimal working example (MWE)
+### Toy example
 
 
 
@@ -161,7 +161,7 @@ where the shaded regions are bounded by iso-density loci of the Gaussians, and t
 
 ## B. Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU) [2]
 
-Not available yet...
+*Not available yet.*
 
 
 
