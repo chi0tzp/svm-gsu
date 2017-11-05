@@ -2,17 +2,15 @@
 
 A C++ framework for training/testing the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).
 
-This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose linear variant (LSVM-GSU) was first proposed in [1], and its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU), was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](#references).
+This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose linear variant (LSVM-GSU) was first proposed in [1], and its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU), was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references).
 
-Below, there are detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) in Matlab is also given, along with some illustrative toy examples.
-
-A short presentation of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-23) is given below. For more detailed presentations of the above classifiers, please refer to the corresponding [paper](#references).
+Below, there are given detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) written in Matlab is also given, along with some illustrative 2D toy examples. Short presentations of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-2) are given below. For more detailed discussion of the above classifiers, please refer to the corresponding [papers](#references).
 
 
 
 ## 0. Prerequisites and build guidelines
 
-The code is built in C++11 using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. In order to build the code, you need to 
+This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. In order to build the code, you need to +++ ... 
 
 ```
 - Eigen ??.??
@@ -20,6 +18,8 @@ The code is built in C++11 using the [Eigen](http://eigen.tuxfamily.org/index.ph
 ```
 
 ### Linux
+
+The framework was originally built in GNU/Linux (and has been tested on ArchLinux, Debian, and Ubuntu) using the [QtCreator IDE](https://www.qt.io/qt-features-libraries-apis-tools-and-ide/#ide). You may use QtCreator project files in order to build and/or modify the code. Otherwise, you may build code using +++ ...
 
 ### Windows
 
@@ -35,27 +35,61 @@ The training set of SVM-GSU consists of the following three parts:
 - A set of matrices that correspond to the **covariance matrices** of the input data (input Gaussian distributions), and 
 - A set of binary **ground truth** labels that correspond to input data class labels.
 
-We adopt a [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)-like file format for the input data files. More specifically, for the above data files, we follow the formats described below. 
+We adopt a [libsvm](https://www.csie.ntu.edu.tw/~cjlin/libsvm/)-like file, plain-text format for the input data files. More specifically, for the above data files, we follow the formats described below. 
 
 ### Mean vectors file format
 
-This is a plain text file
+Each line of the mean vectors file consists of an n-dimensional feature vector, identified by a unique document id (`doc_id`), given in the following format: 
 
 ```
-<doc_id_i> 1:<value> 2:<value> ... j:<value> ... n:<value>\n
+<doc_id> 1:<value> 2:<value> ... j:<value> ... n:<value>\n
 ```
 
+The framework supports sparse representation for the feature vectors, i.e., a zero-valued feature can be omitted. For instance, the following line
 
+~~~
+feat_i 1:0.1 4:0.25 16:0.6
+~~~
+
+corresponds to a 16-dimensional feature vector that is associated with the document id *feat_i*.
 
 ### Ground truth file format
 
+Each line of the ground truth file consists of a binary `label` (in {+1,-1}) associated with a document id (`doc_id`):
+
+~~~
+<doc_id> <label>\n
+~~~
+
+
+
 ### Covariance matrices file format
+
+Each line of the covariance matrices file consists of a matrix, which is identified by a unique document id (`doc_id`), and whose entries are given in the following format:
+
+~~~
+<doc_id> 1,1:<value> ... 1,j:<value> ... 1,n:<value> ... i,1:<value> ... i,j:<value> ... i,n:<value> ... n,1:<value> ... n,j:<value> ... n,n:<value>
+~~~
+
+Similarly to the mean vectors file, the framework adopts a sparse representation format for the covariance matrices. For instance, the following line
+
+~~~
+feat_i 1,1:0.125 2,2:0.5 3,3:2.25
+~~~
+
+corresponds to a 3x3 diagonal matrix that is associated with the document id *feat_i*. 
+
+**Note:** The document id (`doc_id`) that accompanies each line of the above data files, is used to identify each input datum (i.e., a triplet of a mean vector, a covariance matrix, and a truth label that describes an annotated multi-variate Gaussian distribution). In that sense, there is no need to put. Furthermore, the framework will find the intersection between the given mean vectors, covariance matrices, and ground truth labels
+
+Example:
+
+
 
 
 
 ## 2. Usage
 
-The framework consists of two basic parts, one for training a SVM-GSU model [(gsvm-train)](#gsvm-train), and one for evaluating a trained model on a given dataset [(gsvm-predict)](#gsvm-predict). Their basic usage is described below. In any case, ??? using the `-h` command line arguments (i.e., `gsvm-train -h` and `gsvm-predict -h`).
+The framework consists of two basic components, one for training a SVM-GSU model [(gsvm-train)](#gsvm-train), and one for evaluating a trained SVM-GSU model on a given dataset [(gsvm-predict)](#gsvm-predict). Their basic usage is described below. In any case, information about their basic usage can also be obtained using the `-h` command line argument (i.e., `gsvm-train -h` and `gsvm-predict -h`).
 
 ### gsvm-train
 
@@ -102,7 +136,9 @@ Options:
 
 
 
-### 
+### Minimal working example (MWE)
+
+
 
 
 
@@ -123,7 +159,7 @@ where the shaded regions are bounded by iso-density loci of the Gaussians, and t
 
 
 
-## B. Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU) [2,3]
+## B. Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU) [2]
 
 Not available yet...
 
@@ -142,5 +178,3 @@ A visualization tool build in Matlab is available under XXX/
 [1] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Linear Maximum Margin Classifier for Learning from Uncertain Data." *IEEE Transactions on pattern analysis and machine intelligence* XX.YY (2017): pppp-pppp.
 
 [2] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Video event detection using kernel support vector machine with isotropic gaussian sample uncertainty (KSVM-iGSU)." *International Conference on Multimedia Modeling*. Springer, Cham, 2016.
-
-[3] Tzelepis, Christos, Eftichia Mavridaki, Vasileios Mezaris, and Ioannis Patras. "Video aesthetic quality assessment using kernel Support Vector Machine with isotropic Gaussian sample uncertainty (KSVM-iGSU)." In *Image Processing (ICIP), 2016 IEEE International Conference on*, pp. 2410-2414. IEEE, 2016.
