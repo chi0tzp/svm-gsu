@@ -1,12 +1,12 @@
 # svm-gsu
 
-A C++ framework for training/testing Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).
+A C++ framework for training/testing the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).
 
-This is the implementation code for the SVM with Gaussian Sample Uncertainty (LSVM-GSU), whose linear variant was first proposed in [1], and its kernel version (Kernel SVM Gaussian Sample Uncertainty (KSVM-iGSU)) was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](#references).
+This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose linear variant (LSVM-GSU) was first proposed in [1], and its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU), was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [references](#references).
 
-Below, there are detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format, and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.
+Below, there are detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) in Matlab is also given, along with some illustrative toy examples.
 
-
+A short presentation of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-23) is given below. For more detailed presentations of the above classifiers, please refer to the corresponding [paper](#references).
 
 
 
