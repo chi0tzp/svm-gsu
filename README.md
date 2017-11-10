@@ -123,18 +123,18 @@ gsvm-train [options] <mean_vectors> <ground_truth> <covariance_matrices> <model_
 Options:
 
 ~~~
-+v <verbose_mode>: Verbose mode (default: 0)
-+t <kernel_type>: Set type of kernel function (default 0)
+-v <verbose_mode>: Verbose mode (default: 0)
+-t <kernel_type>: Set type of kernel function (default 0)
 	0 -- Linear kernel
     2 -- Radial Basis Function (RBF) kernel
-+d <cov_mat>: Select covariance matrices type (default: 0)
+-d <cov_mat>: Select covariance matrices type (default: 0)
 	0 -- Full covariance matrices
 	1 -- Diagonal covariance matrices
 	3 -- Isotropic covariance matrices
-+l <lambda>: Set the parameter lambda of SVM-GSU (default 1.0)
-+g <gamma>: Set the parameter gamma (default 1.0/dim)
-+T <iter>: Set number of SGD iterations
-+k <k>: Set SGD sampling size
+-l <lambda>: Set the parameter lambda of SVM-GSU (default 1.0)
+-g <gamma>: Set the parameter gamma (default 1.0/dim)
+-T <iter>: Set number of SGD iterations
+-k <k>: Set SGD sampling size
 ~~~
 
 
@@ -159,7 +159,17 @@ Options:
 
 ### Toy example
 
-In [toy_example](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example for testing the ...
+In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example scenario where you will train a LSVM-GSU model and evaluate it on a testing set. The data of this toy example are under [toy_example/data/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example/data).
+
+#### Linux
+
+To run the toy example code, execute the BASH shell-script `run_toy_example.sh` (after making it executable by `chmod +xrun_toy_example.sh `).
+
+
+
+#### Windows
+
+*Not available yet.*
 
 
 
@@ -173,7 +183,7 @@ In [toy_example](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you
 In our method we consider that our training examples are multivariate Gaussian distributions with known means and covariance matrices, each example having a different covariance matrix expressing the uncertainty around its mean. This is illustrated in the figure below
 
 <p align="center">
-  <img src="images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
+  <img src=".images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
 </p>
 
 where the shaded regions are bounded by iso-density loci of the Gaussians, and the means of the Gaussians for examples of the positive and negative classes are located at "x" and "o" respectively. A classical linear SVM formulation (**LSVM**) would consider only the means of the Gaussians as training examples and, by optimizing the soft margin using the hinge loss and a regularization term, would arrive at the separating hyperplane depicted by the dashed line. In our formulation (**LSVM-GSU**), we optimize for the soft margin using the same regularization but the *expected* value of the hinge loss, where the expectation is taken under the given Gaussians. By doing so, we take into consideration the various uncertainties and arrive at a drastically different decision border, depicted by the solid line.  For a detailed presentation of LSVM-GSU, please refer to [1].
