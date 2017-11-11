@@ -51,13 +51,11 @@ int main(int argc, char* argv[])
 
     if (params.getVerbose() == 1)
     {
+
         cout << ("********************************************************************************\n"
-                 "* LIBSVM-GSU: A framework for training/testing the SVM-GSU                     *\n"
-                 "*            (Support Vector Machine with Gaussian Sample Uncertainty).        *\n"
+                 "* gsvm-train: Train a Support Vector Machine with Gaussian Sample Uncertainty  *\n"
                  "*                                                                              *\n"
-                 "* gsvm-train: Train an SVM-GSU                                                 *\n"
-                 "*                                                                              *\n"
-                 "* Version : 1.0                                                                *\n"
+                 "* Version : 0.1                                                                *\n"
                  "* Author  : Christos Tzelepis                                                  *\n"
                  "* Contact : tzelepis@iti.gr                                                    *\n"
                  "*           c.tzelepis@qmul.ac.uk                                              *\n"
