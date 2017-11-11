@@ -106,6 +106,37 @@ doc_5: 1,1:0.25 2,2:0.01 3,3:0.1
 
 then the framework will consider only the input data with ids `doc_3` and `doc_5`. Obviously, for a binary classification problem, the training set should include at least two training examples with different truth labels.
 
+### Model files
+
+After the training of an SVM-GSU (linear or with RBF kernel) a model file is created (with a filename defined as a command line argument -- see [usage](#gsvm-train)) so as to be subsequently used by `gsvm-predict` -- see [usage](#gsvm-predict). The file formats for the linear and the kernel variants of SVM-GSU are respectively described below:
+
+#### Linear model file
+
+~~~
+SVM-GSU Model_File
+kernel_type linear
+lambda 100
+sigmA -22.0186
+sigmB -2.3374
+cov_mat_type diagonal
+w 0.0150138 0.0116311 0.00887193 0.00982599 0.0124118 0.0104942 0.0108264 0.0120473 0.00936632 0.0133811 0.0101319 0.0148072 0.00840837 0.0109078 0.0155783 0.0124124
+b -0.00285747
+~~~
+
+% TODO: Add discussion
+
+
+
+#### Kernel model file
+
+
+
+
+
+
+
+
+
 
 
 ## 2. Usage
