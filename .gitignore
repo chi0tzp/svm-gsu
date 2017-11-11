@@ -1,21 +1,18 @@
 .directory
 *~
 tmp/
-examples/
-visualization_tool/
-mnist_exp/
-
-
 
 
 # gsvm-train
-build-gsvm-train-Desktop-Debug/
-build-gsvm-train-Desktop-Release/
-gsvm-train/gsvm-train.pro
-gsvm-train/gsvm-train.pro.user
+source/gsvm-train/gsvm-train.pro
+source/gsvm-train/gsvm-train.pro.user
+build/gsvm-train/gsvm-train
+build/gsvm-train/*.o
+build/gsvm-train/.directory
 
 # gsvm-predict
-build-gsvm-predict-Desktop-Debug/
-build-gsvm-predict-Desktop-Release/
-gsvm-predict/gsvm-predict.pro
-gsvm-predict/gsvm-predict.pro.user
+source/gsvm-predict/gsvm-predict.pro
+source/gsvm-predict/gsvm-predict.pro.user
+build/gsvm-predict/gsvm-predict
+build/gsvm-predict/*.o
+build/gsvm-predict/.directory
