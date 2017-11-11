@@ -6,6 +6,7 @@ tmp/
 # gsvm-train
 source/gsvm-train/gsvm-train.pro
 source/gsvm-train/gsvm-train.pro.user
+source/gsvm-train/*.o
 build/gsvm-train/gsvm-train
 build/gsvm-train/*.o
 build/gsvm-train/.directory
@@ -13,6 +14,7 @@ build/gsvm-train/.directory
 # gsvm-predict
 source/gsvm-predict/gsvm-predict.pro
 source/gsvm-predict/gsvm-predict.pro.user
+source/gsvm-predict/*.o
 build/gsvm-predict/gsvm-predict
 build/gsvm-predict/*.o
 build/gsvm-predict/.directory
