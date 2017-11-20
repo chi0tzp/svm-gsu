@@ -8,6 +8,8 @@ Below, there are given detailed guidelines on how to [build](#0-prerequisites-an
 
 
 
+
+
 ## 0. Prerequisites and build guidelines
 
 This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. The code was originally developed in GNU/Linux ([Arch Linux](https://www.archlinux.org/)) and has been tested on Arch Linux, Debian, and Debian-based (e.g., *Ubuntu) distributions. In order to build the code, you first need to install (or make sure that you have already installed in your system) the following: 
@@ -35,6 +37,8 @@ In order to build the code, after cloning (or downloading and unzipping) the rep
 - `$ make`
 
 Granted that `gcc` and `Eigen` have been correctly installed in your system, the above build process should generate the binaries `gsvm-train` and `gsvm-predict` under the `build/` directory.
+
+
 
 
 
@@ -142,6 +146,8 @@ b -0.00285747
 
 
 
+
+
 ## 2. Usage
 
 The framework consists of two basic components, one for training a SVM-GSU model [(gsvm-train)](#gsvm-train), and one for evaluating a trained SVM-GSU model on a given dataset [(gsvm-predict)](#gsvm-predict). Their basic usage is described below. In any case, information about their basic usage can also be obtained by running `gsvm-train` or `gsvm-predict` with no command line arguments.
@@ -194,6 +200,8 @@ In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) yo
 
 
 
+
+
 ## A. Linear SVM with Gaussian Sample Uncertainty (LSVM-GSU) [1]
 
 ### Motivation
@@ -205,6 +213,8 @@ In our method we consider that our training examples are multivariate Gaussian d
 </p>
 
 where the shaded regions are bounded by iso-density loci of the Gaussians, and the means of the Gaussians for examples of the positive and negative classes are located at "x" and "o" respectively. A classical linear SVM formulation (**LSVM**) would consider only the means of the Gaussians as training examples and, by optimizing the soft margin using the hinge loss and a regularization term, would arrive at the separating hyperplane depicted by the dashed line. In our formulation (**LSVM-GSU**), we optimize for the soft margin using the same regularization but the *expected* value of the hinge loss, where the expectation is taken under the given Gaussians. By doing so, we take into consideration the various uncertainties and arrive at a drastically different decision border, depicted by the solid line.  For a detailed presentation of LSVM-GSU, please refer to [1].
+
+
 
 
 
