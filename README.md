@@ -10,20 +10,31 @@ Below, there are given detailed guidelines on how to [build](#0-prerequisites-an
 
 ## 0. Prerequisites and build guidelines
 
-This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. In order to build the code, you need to +++ ... 
+This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. The code was originally developed in GNU/Linux ([Arch Linux](https://www.archlinux.org/)) and has been tested on Arch Linux, Debian, and Debian-based (e.g., *Ubuntu) distributions. In order to build the code, you first need to install (or make sure that you have already installed in your system) the following: 
 
 ```
-- Eigen ??.??
-- ???
+- gcc >= 4.8
+- Eigen 3.3.4
 ```
 
-### Linux
+##### Install gcc 
 
-The framework was originally built in GNU/Linux (and has been tested on ArchLinux, Debian, and Ubuntu) using the [QtCreator IDE](https://www.qt.io/qt-features-libraries-apis-tools-and-ide/#ide). You may use QtCreator project files in order to build and/or modify the code. Otherwise, you may build code using +++ ...
+- Arch Linux: `sudo pacman -S gcc`
+- Debian/Ubuntu: `sudo apt-get install gcc`
 
-### Windows
+##### Install Eigen
 
-*Not available yet.*
+- Arch Linux: `sudo pacman -S eigen`
+- Debian/Ubuntu: `sudo apt-get install libeigen3-dev `
+
+
+In order to build the code, after cloning (or downloading and unzipping) the repo, follow the steps
+
+- `$ cd svm-gsu/`
+- `$ cd build/`
+- `$ make`
+
+Granted that `gcc` and `Eigen` have been correctly installed in your system, the above build process should generate the binaries `gsvm-train` and `gsvm-predict` under the `build/` directory.
 
 
 
@@ -79,9 +90,9 @@ feat_i 1,1:0.125 2,2:0.5 3,3:2.25
 
 corresponds to a 3x3 diagonal matrix that is associated with the document id *feat_i*. An example covariance matrices file can be found [here]().
 
-**Note:** The document id (`doc_id`) that accompanies each line of the above data files, is used to identify each input datum (i.e., a triplet of a mean vector, a covariance matrix, and a truth label that describes an annotated multi-variate Gaussian distribution). In that sense, there is no need to put inout mean vectors, covariance matrices, and truth labels in correspondance. Furthermore, the framework will find the intersection between the given `doc_id`'s (i.e., the given mean vectors, covariance matrices, and truth labels) and will construct the training set appropriately. As an example, if the given data files are as follows
+**Note:** The document id (`doc_id`) that accompanies each line of the above data files, is used to uniquely identify each input datum (i.e., a triplet of a mean vector, a covariance matrix, and a truth label that describes an annotated multi-variate Gaussian distribution). In that sense, there is no need to put input mean vectors, covariance matrices, and truth labels in correspondance. Furthermore, the framework will find the intersection between the given `doc_id`'s (i.e., the given mean vectors, covariance matrices, and truth labels) and will construct the training set appropriately. As an example, if the given data files are as follows:
 
-Mean vectors:
+*Mean vectors file:*
 
 ~~~
 doc_1 1:0.13 3:0.12
@@ -89,7 +100,7 @@ doc_3 1:-0.21 2:0.1 3:-0.43
 doc_5 1:0.11 2:-0.21
 ~~~
 
-Ground truth labels:
+*Ground truth labels file:*
 
 ~~~
 doc_5 -1
@@ -97,20 +108,22 @@ doc_3 +1
 doc_6 -1
 ~~~
 
-Covariance matrices
+*Covariance matrices file:*
 
 ~~~
 doc_3: 1,1:0.25 2,2:0.01 3,3:0.1
 doc_5: 1,1:0.25 2,2:0.01 3,3:0.1
 ~~~
 
-then the framework will consider only the input data with ids `doc_3` and `doc_5`. Obviously, for a binary classification problem, the training set should include at least two training examples with different truth labels.
+then the framework will consider only the input data with ids `doc_3` and `doc_5`. Clearly, for a binary classification problem, the training set should include at least two training examples with different truth labels.
 
 ### Model files
 
-After the training of an SVM-GSU (linear or with RBF kernel) a model file is created (with a filename defined as a command line argument -- see [usage](#gsvm-train)) so as to be subsequently used by `gsvm-predict` -- see [usage](#gsvm-predict). The file formats for the linear and the kernel variants of SVM-GSU are respectively described below:
+After the training process of an SVM-GSU (linear or with the RBF kernel) is complete, a model file is created (with a filename defined as a command line argument -- see [usage](#gsvm-train)) so as to be subsequently used by `gsvm-predict` -- see [usage](#gsvm-predict). The file formats for the linear and the kernel variants of SVM-GSU are respectively described below:
 
-#### Linear model file
+#### Linear model file (example)
+
+As an example, the following linear model file describes a trained LSVM-GSU that has been trained using diagonal covariance matrices, `T=1000` SGD iterations and `k=10` examples per each iteration, and a regularization parameter `lambda=100.` The parameters `sigmA` and `sigmB` refer to the Platt scaling method used for transforming the outputs of the classifier (i.e., the decision values) into a probability distribution over classes (i.e., so as to be interpreted as a-posteriori probabilities that the testing samples belong to the classes to which they have been classified -- see Sect. 3.1 of [1]). Finally, the optimal parameters (i.e., the parameters of the separating hyperplane, `w` and `b`), are given in the last two lines of the file:
 
 ~~~
 SVM-GSU Model_File
@@ -123,25 +136,15 @@ w 0.0150138 0.0116311 0.00887193 0.00982599 0.0124118 0.0104942 0.0108264 0.0120
 b -0.00285747
 ~~~
 
-% TODO: Add discussion
+#### Kernel model file (example)
 
-
-
-#### Kernel model file
-
-
-
-
-
-
-
-
+*Not available yet.*
 
 
 
 ## 2. Usage
 
-The framework consists of two basic components, one for training a SVM-GSU model [(gsvm-train)](#gsvm-train), and one for evaluating a trained SVM-GSU model on a given dataset [(gsvm-predict)](#gsvm-predict). Their basic usage is described below. In any case, information about their basic usage can also be obtained using the `-h` command line argument (i.e., `gsvm-train -h` and `gsvm-predict -h`).
+The framework consists of two basic components, one for training a SVM-GSU model [(gsvm-train)](#gsvm-train), and one for evaluating a trained SVM-GSU model on a given dataset [(gsvm-predict)](#gsvm-predict). Their basic usage is described below. In any case, information about their basic usage can also be obtained by running `gsvm-train` or `gsvm-predict` with no command line arguments.
 
 ### gsvm-train
 
@@ -168,8 +171,6 @@ Options:
 -k <k>: Set SGD sampling size
 ~~~
 
-
-
 ### gsvm-predict
 
 Usage:
@@ -186,23 +187,9 @@ Options:
 -m <evaluation_metrics>: Evaluation metrics output file
 ~~~
 
-
-
 ### Toy example
 
-In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example scenario where you will train a LSVM-GSU model and evaluate it on a testing set. The data of this toy example are under [toy_example/data/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example/data).
-
-#### Linux
-
-To run the toy example code, execute the BASH shell-script `run_toy_example.sh` (after making it executable by `chmod +xrun_toy_example.sh `).
-
-
-
-#### Windows
-
-*Not available yet.*
-
-
+In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example scenario where you will train a LSVM-GSU model and evaluate it on a testing set. The data of this toy example are under [toy_example/data/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example/data). To run the toy example code, execute the BASH shell-script `run_toy_example.sh` (after making it executable by `chmod +xrun_toy_example.sh `).
 
 
 
@@ -239,4 +226,4 @@ A visualization tool build in Matlab is available under XXX/
 
 [1] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Linear Maximum Margin Classifier for Learning from Uncertain Data." *IEEE Transactions on pattern analysis and machine intelligence* XX.YY (2017): pppp-pppp.
 
-[2] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Video event detection using kernel support vector machine with isotropic gaussian sample uncertainty (KSVM-iGSU)." *International Conference on Multimedia Modeling*. Springer, Cham, 2016.
+[2] C. Tzelepis, V. Mezaris, I. Patras, "*Video Event Detection using Kernel Support Vector Machine with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU)*", Proc. 22nd Int. Conf. on MultiMedia Modeling (MMM'16), Miami, FL, USA, Springer LNCS vol. 9516, pp. 3-15, Jan. 2016.
