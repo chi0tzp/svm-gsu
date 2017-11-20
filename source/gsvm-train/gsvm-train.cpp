@@ -49,16 +49,16 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    if (params.getVerbose() == 1)
-    {
+    if (params.getVerbose() == 1){
 
         cout << ("********************************************************************************\n"
                  "* gsvm-train: Train a Support Vector Machine with Gaussian Sample Uncertainty  *\n"
                  "*                                                                              *\n"
                  "* Version : 0.1                                                                *\n"
                  "* Author  : Christos Tzelepis                                                  *\n"
-                 "* Contact : tzelepis@iti.gr                                                    *\n"
-                 "*           c.tzelepis@qmul.ac.uk                                              *\n"
+                 "* Contact : tzelepis@iti.gr, c.tzelepis@qmul.ac.uk                             *\n"
+                 "* GitHub  : @chi0tzp                                                           *\n"
+                 "*                                                                              *\n"
                  "********************************************************************************\n");
         cout <<  "  -- Options selected:" << endl;
         cout <<  "     -- Kernel type: " << params.getKernelType() << endl;
@@ -81,15 +81,12 @@ int main(int argc, char* argv[])
      *                             [ Read input data ]                             *
      *                                                                             *
      *******************************************************************************/
-
-    if (params.getVerbose() ==  1)
-    {
+    if (params.getVerbose() ==  1){
         cout << "  -- Read input data...";
         read_data_start = high_resolution_clock::now();
     }
 
-    switch (params.getCovMatType())
-    {
+    switch (params.getCovMatType()){
         case 0:
             prob.readInputDataFull(mean_vectors_filename, covariance_matrices_filename, labels_filename);
             break;
@@ -103,8 +100,7 @@ int main(int argc, char* argv[])
             break;
     }
 
-    if (params.getVerbose() == 1)
-    {
+    if (params.getVerbose() == 1){
         read_data_end = high_resolution_clock::now();
         cout << "Done! [Elapsed time: ";
         getElapsedTime( duration_cast<seconds>(read_data_end-read_data_start).count() );
@@ -120,8 +116,7 @@ int main(int argc, char* argv[])
      *                                                                             *
      *******************************************************************************/
 
-    if (params.getVerbose() == 1)
-    {
+    if (params.getVerbose() == 1){
         cout << "  -- Solve problem..." << endl;
         solve_prob_start = high_resolution_clock::now();
     }
@@ -129,19 +124,16 @@ int main(int argc, char* argv[])
     /*******************************************************************************
      *                          Learn in linear subspaces                          *
      *******************************************************************************/
-    if (params.getP()<1.0)
-    {
+    if (params.getP()<1.0){
         /* Conduct eigenanalysis on the input covariance matrices */
-        if (params.getVerbose() == 1)
-        {
+        if (params.getVerbose() == 1){
             cout << "     -- Eigendecomposition...";
             eigdecomp_start = high_resolution_clock::now();
         }
 
         prob.eigenDecomp();
 
-        if (params.getVerbose() == 1)
-        {
+        if (params.getVerbose() == 1){
             eigdecomp_end = high_resolution_clock::now();
             cout << "Done! [Elapsed time: ";
             getElapsedTime(duration_cast<seconds>(eigdecomp_end - eigdecomp_start).count());
@@ -157,8 +149,7 @@ int main(int argc, char* argv[])
         }
 
         /* Solve the problem using SGD */
-        if (params.getVerbose() == 1)
-        {
+        if (params.getVerbose() == 1){
             sgd_start = high_resolution_clock::now();
             cout << "     -- SGD...";
         }
@@ -169,8 +160,7 @@ int main(int argc, char* argv[])
             // Not Available/Implemented Yet (?)
 
 
-        if (params.getVerbose() == 1)
-        {
+        if (params.getVerbose() == 1){
             sgd_end = high_resolution_clock::now();
             cout << "Done! [Elapsed time: ";
             getElapsedTime(duration_cast<seconds>(sgd_end - sgd_start).count());
@@ -180,29 +170,24 @@ int main(int argc, char* argv[])
     /*******************************************************************************
      *                         Learn in the original space                         *
      *******************************************************************************/
-    else
-    {
-        if (params.getVerbose() == 1)
-        {
+    else{
+        if (params.getVerbose() == 1){
             cout << "     -- SGD...";
             sgd_start = high_resolution_clock::now();
         }
 
         /* Solve the problem using SGD */
-        if (params.getKernelType() == 0)
-        {
+        if (params.getKernelType() == 0){
             prob.solveLSVMGSUxSpace();
         }
-        else if (params.getKernelType() == 2)
-        {
+        else if (params.getKernelType() == 2){
             // TODO:
             // prob.computeKernelMatrix();
             // prob.solveKSVMiGSU();
         }
 
 
-        if (params.getVerbose() == 1)
-        {
+        if (params.getVerbose() == 1){
             sgd_end = high_resolution_clock::now();
             cout << "Done! [Elapsed time: ";
             getElapsedTime(duration_cast<seconds>(sgd_end - sgd_start).count());
@@ -210,8 +195,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         solve_prob_end = high_resolution_clock::now();
         cout << "Problem Solved! [Elapsed time: ";
         getElapsedTime(duration_cast<seconds>(solve_prob_end - solve_prob_start).count());
