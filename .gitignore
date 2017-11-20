@@ -22,5 +22,5 @@ build/gsvm-predict/.qmake.stash
 build/gsvm-predict/.directory
 
 # Toy example
-toy_example/models/*
-toy_example/output/*
+toy_example/models
+toy_example/output
