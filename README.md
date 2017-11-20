@@ -16,7 +16,7 @@ This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) usin
 
 ```
 - gcc >= 4.8
-- Eigen 3.3.4
+- Eigen >= 3
 ```
 
 ##### Install gcc 
