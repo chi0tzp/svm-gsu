@@ -4,6 +4,13 @@
 
 This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose linear variant (LSVM-GSU) was first proposed in [1], and its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU), was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references).
 
+This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose 
+
+- linear variant (**LSVM-GSU**) was first proposed in **[1]**, and 
+- its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (**KSVM-iGSU**), was first proposed in **[2]**. 
+
+If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references).
+
 Below, there are given detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [toy example](#toy-example) is given as a +++ .... A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) written in Matlab is also given, along with some illustrative 2D toy examples. Short presentations of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-2) are given below. For more detailed discussion of the above classifiers, please refer to the corresponding [papers](#references).
 
 
@@ -12,7 +19,7 @@ Below, there are given detailed guidelines on how to [build](#0-prerequisites-an
 
 ## 0. Prerequisites and build guidelines
 
-This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. The code was originally developed in GNU/Linux ([Arch Linux](https://www.archlinux.org/)) and has been tested on Arch Linux, Debian, and Debian-based (e.g., *Ubuntu) distributions. In order to build the code, you first need to install (or make sure that you have already installed in your system) the following: 
+This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) using the [Eigen](http://eigen.tuxfamily.org/index.php?title=Main_Page) library. The code was originally developed in GNU/Linux (Arch Linux) and has been tested on Arch Linux, Debian, and Debian-based (e.g., *Ubuntu) distributions. In order to build the code, you first need to install (or make sure that you have already installed in your system) the following: 
 
 ```
 - gcc >= 4.8
@@ -30,15 +37,7 @@ This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) usin
 - Debian/Ubuntu: `sudo apt-get install libeigen3-dev `
 
 
-In order to build the code, after cloning (or downloading and unzipping) the repo, follow the steps
-
-- `$ cd svm-gsu/`
-- `$ cd build/`
-- `$ make`
-
-Granted that `gcc` and `Eigen` have been correctly installed in your system, the above build process should generate the binaries `gsvm-train` and `gsvm-predict` under the `build/` directory.
-
-
+In order to build the code, after cloning the repo, for `gsvm-train`, which is the code for training an SVM-GSU, go to `build/gsvm-train` and run `make`. Granted that `gcc` and `Eigen` have been correctly installed in your system, the above build process should generate a binary, i.e., `gsvm-train`. Similarly, for building `gsvm-predict`, go to `build/gsvm-predict` and run `make`. A binary, i.e., `gsvm-predict`, will be generated. You may also check that above binaries have been built correctly by running them with no arguments (a help message about its usage should be printed).
 
 
 
