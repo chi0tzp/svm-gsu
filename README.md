@@ -4,17 +4,10 @@
 
 <p align="center">
   <img src=".images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
-
 </p>
 <p align="center">
-Motivation of the linear SVM-GSU.
+*Motivation of the linear SVM-GSU.*
 </p>
-
-
-
-
-
-
 
 This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose 
 
