@@ -9,6 +9,8 @@
 <b>Motivation of the linear SVM-GSU:</b> <br>The proposed classifier takes input data uncertainty (modeled as multivariate anisotropic Gaussians) into consideration, leading to a (probably drastically) different decision border (solid line), compared to the standard linear SVM (dashed line) that would consider only the means of the Gaussians, ignoring the various uncertainties.
 </p>
 
+------
+
 This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose 
 
 - linear variant (**LSVM-GSU**) was first proposed in **[1]**, and 
