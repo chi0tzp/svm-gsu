@@ -2,16 +2,21 @@
 
 *A C++ framework for training/testing the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).*
 
-This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose linear variant (LSVM-GSU) was first proposed in [1], and its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU), was first proposed in [2]. If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references).
+In our method we consider that our training examples are multivariate Gaussian distributions with known means and covariance matrices, each example having a different covariance matrix expressing the uncertainty around its mean. This is illustrated in the figure below
+
+<p align="center">
+  <img src=".images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
+
+*Motivation of the linear SVM-GSU.*
+
+</p>
 
 This is the implementation code for the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU), whose 
 
 - linear variant (**LSVM-GSU**) was first proposed in **[1]**, and 
 - its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (**KSVM-iGSU**), was first proposed in **[2]**. 
 
-If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references).
-
-Below, there are given detailed guidelines on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [toy example](#toy-example) is given as a +++ .... A [Visualization tool](#visualization-of-lsvm-gsuksvm-igsu) written in Matlab is also given, along with some illustrative 2D toy examples. Short presentations of [LSVM-GSU](#a-linear-svm-with-gaussian-sample-uncertainty-lsvm-gsu-1) and [KSVM-iGSU ](#b-kernel-svm-with-isotropic-gaussian-sample-uncertainty-ksvm-igsu-2) are given below. For more detailed discussion of the above classifiers, please refer to the corresponding [papers](#references).
+If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references). Below, detailed guidelines are given on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [toy example](#toy-example) is also given so as to illustrate ???'s basic usage.
 
 
 
@@ -37,7 +42,7 @@ This framework is built in [C++11](https://en.wikipedia.org/wiki/C%2B%2B11) usin
 - Debian/Ubuntu: `sudo apt-get install libeigen3-dev `
 
 
-In order to build the code, after cloning the repo, for `gsvm-train`, which is the code for training an SVM-GSU, go to `build/gsvm-train` and run `make`. Granted that `gcc` and `Eigen` have been correctly installed in your system, the above build process should generate a binary, i.e., `gsvm-train`. Similarly, for building `gsvm-predict`, go to `build/gsvm-predict` and run `make`. A binary, i.e., `gsvm-predict`, will be generated. You may also check that above binaries have been built correctly by running them with no arguments (a help message about its usage should be printed).
+In order to build the code, after cloning the repo, for `gsvm-train`, which is the code for training an SVM-GSU, go to `build/gsvm-train` and run `make`. Granted that `gcc` and `Eigen` have been correctly installed in your system, the above build process should generate a binary file, i.e., `gsvm-train`. Similarly, for building `gsvm-predict`, go to `build/gsvm-predict` and run `make`. A binary, i.e., `gsvm-predict`, will be generated. You may also check that the above binaries have been built correctly by running them with no arguments (a help message about their usage should be printed).
 
 
 
@@ -200,39 +205,10 @@ In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) yo
 
 
 
-
-## A. Linear SVM with Gaussian Sample Uncertainty (LSVM-GSU) [1]
-
-### Motivation
-
-In our method we consider that our training examples are multivariate Gaussian distributions with known means and covariance matrices, each example having a different covariance matrix expressing the uncertainty around its mean. This is illustrated in the figure below
-
-<p align="center">
-  <img src=".images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
-</p>
-
-where the shaded regions are bounded by iso-density loci of the Gaussians, and the means of the Gaussians for examples of the positive and negative classes are located at "x" and "o" respectively. A classical linear SVM formulation (**LSVM**) would consider only the means of the Gaussians as training examples and, by optimizing the soft margin using the hinge loss and a regularization term, would arrive at the separating hyperplane depicted by the dashed line. In our formulation (**LSVM-GSU**), we optimize for the soft margin using the same regularization but the *expected* value of the hinge loss, where the expectation is taken under the given Gaussians. By doing so, we take into consideration the various uncertainties and arrive at a drastically different decision border, depicted by the solid line.  For a detailed presentation of LSVM-GSU, please refer to [1].
-
-
-
-
-
-## B. Kernel SVM with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU) [2]
-
-*Not available yet.*
-
-
-
-## Visualization of LSVM-GSU/KSVM-iGSU
-
-A visualization tool build in Matlab is available under XXX/
-
-
-
-
-
 ## References
 
-[1] Tzelepis, Christos, Vasileios Mezaris, and Ioannis Patras. "Linear Maximum Margin Classifier for Learning from Uncertain Data." *IEEE Transactions on pattern analysis and machine intelligence* XX.YY (2017): pppp-pppp.
+[1] C. Tzelepis, V. Mezaris, I. Patras, *"Linear Maximum Margin Classifier for Learning from Uncertain Data"*, IEEE Transactions on Pattern Analysis and Machine Intelligence, accepted for publication. [DOI:10.1109/TPAMI.2017.2772235](http://ieeexplore.ieee.org/document/8103808/).
 
 [2] C. Tzelepis, V. Mezaris, I. Patras, "*Video Event Detection using Kernel Support Vector Machine with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU)*", Proc. 22nd Int. Conf. on MultiMedia Modeling (MMM'16), Miami, FL, USA, Springer LNCS vol. 9516, pp. 3-15, Jan. 2016.
+
+[DOI:10.1007/978-3-319-27671-7_1](https://doi.org/10.1007/978-3-319-27671-7_1)
