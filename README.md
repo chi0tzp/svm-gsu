@@ -16,9 +16,7 @@ This is the implementation code for the Support Vector Machine with Gaussian Sam
 - linear variant (**LSVM-GSU**) was first proposed in **[1]**, and 
 - its kernel version, i.e., Kernel SVM with Isotropic Gaussian Sample Uncertainty (**KSVM-iGSU**), was first proposed in **[2]**. 
 
-If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references). Below, detailed guidelines are given on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [toy example](#toy-example) is also given so as to illustrate ???'s basic usage.
-
-
+If you want to use one of the above classifiers, please consider citing the appropriate [papers](#references). Below, detailed guidelines are given on how to [build](#0-prerequisites-and-build-guidelines) the code,  [prepare](#1-files-format) the input data files to the appropriate format (example files are given accordingly), and [use](#2-usage) the built binaries for training and/or testing SVM-GSU.  A [toy example](#toy-example) is also given so as to illustrate algorithms' basic usage.
 
 
 
@@ -70,7 +68,7 @@ The framework supports sparse representation for the feature vectors, i.e., a ze
 feat_i 1:0.1 4:0.25 16:0.6
 ~~~
 
-corresponds to a 16-dimensional feature vector that is associated with the document id *feat_i*. An example mean vectors file can be found [here]().
+corresponds to a 16-dimensional feature vector that is associated with the document id *feat_i*. An example mean vectors file can be found [here](https://github.com/chi0tzp/svm-gsu/blob/master/toy_example/data/mean.dat).
 
 ### Ground truth file format
 
@@ -80,7 +78,7 @@ Each line of the ground truth file consists of a binary `label` (in {+1,-1}) ass
 <doc_id> <label>\n
 ~~~
 
-An example ground truth file can be found [here]().
+An example ground truth file can be found [here](https://github.com/chi0tzp/svm-gsu/blob/master/toy_example/data/labels.dat).
 
 ### Covariance matrices file format
 
@@ -96,7 +94,7 @@ Similarly to the mean vectors file, the framework adopts a sparse representation
 feat_i 1,1:0.125 2,2:0.5 3,3:2.25
 ~~~
 
-corresponds to a 3x3 diagonal matrix that is associated with the document id *feat_i*. An example covariance matrices file can be found [here]().
+corresponds to a 3x3 diagonal matrix that is associated with the document id *feat_i*. An example covariance matrices file can be found [here](https://github.com/chi0tzp/svm-gsu/blob/master/toy_example/data/cov_diag.dat).
 
 **Note:** The document id (`doc_id`) that accompanies each line of the above data files, is used to uniquely identify each input datum (i.e., a triplet of a mean vector, a covariance matrix, and a truth label that describes an annotated multi-variate Gaussian distribution). In that sense, there is no need to put input mean vectors, covariance matrices, and truth labels in correspondance. Furthermore, the framework will find the intersection between the given `doc_id`'s (i.e., the given mean vectors, covariance matrices, and truth labels) and will construct the training set appropriately. As an example, if the given data files are as follows:
 
@@ -147,8 +145,6 @@ b -0.00285747
 #### Kernel model file (example)
 
 *Not available yet.*
-
-
 
 
 
