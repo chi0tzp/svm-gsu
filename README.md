@@ -2,16 +2,13 @@
 
 *A C++ framework for training/testing the Support Vector Machine with Gaussian Sample Uncertainty (SVM-GSU).*
 
-In our method we consider that our training examples are multivariate Gaussian distributions with known means and covariance matrices, each example having a different covariance matrix expressing the uncertainty around its mean. This is illustrated in the figure below
-
 <p align="center">
   <img src=".images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
 
 </p>
-
-```
-<p align="center">Motivation of the linear SVM-GSU.</p>
-```
+<p align="center">
+Motivation of the linear SVM-GSU.
+</p>
 
 
 
