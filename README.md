@@ -6,7 +6,7 @@
   <img src=".images/svmgsu_motivation.jpg" width="300" alt="SVM-GSU's motivation"/>
 </p>
 <p align="center">
-<b>Motivation of the linear SVM-GSU:</b> <br>The proposed classifier takes input data uncertainty (modeled as multivariate anisotropic Gaussians) into consideration, leading to a (probably drastically) different decision border (solid line), compared to the standard linear SVM (dashed line) that would consider only the means of the Gaussians, ignoring the various uncertainties.
+<b>Motivation of the linear SVM-GSU:</b> <i>The proposed classifier takes input data uncertainty (modeled as multivariate anisotropic Gaussians) into consideration, leading to a (probably drastically) different decision border (solid line), compared to the standard linear SVM (dashed line) that would consider only the means of the Gaussians, ignoring the various uncertainties.</i>
 </p>
 
 ------
@@ -196,8 +196,6 @@ Options:
 ### Toy example
 
 In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example scenario where you will train a LSVM-GSU model and evaluate it on a testing set. The data of this toy example are under [toy_example/data/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example/data). To run the toy example code, execute the BASH shell-script `run_toy_example.sh` (after making it executable by `chmod +xrun_toy_example.sh `).
-
-
 
 
 
