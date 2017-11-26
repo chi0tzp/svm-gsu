@@ -51,25 +51,26 @@ int main(int argc, char* argv[])
 
     if (params.getVerbose() == 1){
 
-        cout << ("********************************************************************************\n"
-                 "* gsvm-train: Train a Support Vector Machine with Gaussian Sample Uncertainty  *\n"
-                 "*                                                                              *\n"
-                 "* Version : 0.1                                                                *\n"
-                 "* Author  : Christos Tzelepis                                                  *\n"
-                 "* Contact : tzelepis@iti.gr, c.tzelepis@qmul.ac.uk                             *\n"
-                 "* GitHub  : @chi0tzp                                                           *\n"
-                 "*                                                                              *\n"
-                 "********************************************************************************\n");
-        cout <<  "  -- Options selected:" << endl;
-        cout <<  "     -- Kernel type: " << params.getKernelType() << endl;
-        cout <<  "        -- lambda  : " << params.getLambda()     << endl;
-        cout <<  "     -- Covariance Matrices: " << params.getCovMatTypeVerb() << endl;
-        cout <<  "     -- T = " << params.getT() << endl;
-        cout <<  "     -- k = " << params.getK() << endl;
+        cout << ("************************************************************************\n"
+                 "* svm-gsu: A framework for training/testing the Support Vector Machine *\n"
+                 "*          with Gaussian Sample Uncertainty (SVM-GSU).                 *\n"
+                 "*  -- gsvm-train: Train an SVM-GSU model.                              *\n"
+                 "*----------------------------------------------------------------------*\n"
+                 "* Version : 0.1                                                        *\n"
+                 "* Author  : Christos Tzelepis                                          *\n"
+                 "* Contact : tzelepis@iti.gr                                            *\n"
+                 "* GitHub  : @chi0tzp                                                   *\n"
+                 "************************************************************************\n");
+        cout <<  ".Options selected:" << endl;
+        cout <<  " \\__Kernel type: " << params.getKernelType() << endl;
+        cout <<  " \\__lambda parameter: " << params.getLambda()     << endl;
+        cout <<  " \\__Covariance matrices type: " << params.getCovMatTypeVerb() << endl;
+        cout <<  " \\__Number of SGD iterations: T = " << params.getT() << endl;
+        cout <<  " \\__SGD sampling size: k = " << params.getK() << endl;
         if (params.getP()<1.0)
-            cout << "     -- Learning in linear subspaces: p=" << params.getP() << endl;
+            cout << " \\__Learning in linear subspaces: p=" << params.getP() << endl;
         else
-            cout << "     -- Learning in the original feature space" << endl;
+            cout << " \\__Learning in the original feature space" << endl;
     }
 
     /* Define the SVM-GSU problem */
@@ -82,7 +83,7 @@ int main(int argc, char* argv[])
      *                                                                             *
      *******************************************************************************/
     if (params.getVerbose() ==  1){
-        cout << "  -- Read input data...";
+        cout << ".Read input data...";
         read_data_start = high_resolution_clock::now();
     }
 
@@ -105,8 +106,8 @@ int main(int argc, char* argv[])
         cout << "Done! [Elapsed time: ";
         getElapsedTime( duration_cast<seconds>(read_data_end-read_data_start).count() );
         cout << "]" << endl;
-        cout << "     -- Training set cardinality: " << prob.getL() << endl;
-        cout << "     -- Feature space dimensionality: " << prob.getDim() << endl;
+        cout << " \\__Training set cardinality: " << prob.getL() << endl;
+        cout << " \\__Feature space dimensionality: " << prob.getDim() << endl;
     }
 
 
@@ -117,7 +118,7 @@ int main(int argc, char* argv[])
      *******************************************************************************/
 
     if (params.getVerbose() == 1){
-        cout << "  -- Solve problem..." << endl;
+        cout << ".Solve problem..." << endl;
         solve_prob_start = high_resolution_clock::now();
     }
 
@@ -127,7 +128,7 @@ int main(int argc, char* argv[])
     if (params.getP()<1.0){
         /* Conduct eigenanalysis on the input covariance matrices */
         if (params.getVerbose() == 1){
-            cout << "     -- Eigendecomposition...";
+            cout << " \\__.Eigendecomposition...";
             eigdecomp_start = high_resolution_clock::now();
         }
 
@@ -144,14 +145,14 @@ int main(int argc, char* argv[])
                 ss_dims.push_back(prob.getPrincAxes(i).size());
             int min_dim = *std::min_element(ss_dims.begin(), ss_dims.end());
             int max_dim = *std::max_element(ss_dims.begin(), ss_dims.end());
-            cout << "        -- min dim: " << min_dim << endl;
-            cout << "        -- max dim: " << max_dim << endl;
+            cout << " |   \\__min dim: " << min_dim << endl;
+            cout << " |   \\__max dim: " << max_dim << endl;
         }
 
         /* Solve the problem using SGD */
         if (params.getVerbose() == 1){
             sgd_start = high_resolution_clock::now();
-            cout << "     -- SGD...";
+            cout << " \\__SGD...";
         }
 
         if (params.getKernelType() == 0)
@@ -172,7 +173,7 @@ int main(int argc, char* argv[])
      *******************************************************************************/
     else{
         if (params.getVerbose() == 1){
-            cout << "     -- SGD...";
+            cout << " \\__SGD...";
             sgd_start = high_resolution_clock::now();
         }
 
@@ -197,16 +198,24 @@ int main(int argc, char* argv[])
 
     if (params.getVerbose()){
         solve_prob_end = high_resolution_clock::now();
-        cout << "Problem Solved! [Elapsed time: ";
+        cout << ".Problem Solved! [Elapsed time: ";
         getElapsedTime(duration_cast<seconds>(solve_prob_end - solve_prob_start).count());
         cout << "]" << endl;
     }
 
     /* Write model file */
+
+    if (params.getVerbose())
+        cout << ".Write model file." << endl;
+
     if (params.getKernelType() == 0)
         prob.writeLinearModelFile(model_filename);
     else if (params.getKernelType() == 2)
         prob.writeKernelModelFile(model_filename);
+
+    if (params.getVerbose())
+        cout << "*** Goodbye! ***" << endl;
+
 
     return 0;
 }
