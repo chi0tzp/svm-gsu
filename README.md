@@ -193,6 +193,16 @@ Options:
 -m <evaluation_metrics>: Evaluation metrics output file
 ~~~
 
+The evaluation metrics file (set by `-m <evaluation_metrics>`) provides the following results:
+
+- Accuracy
+- Precision, Precision @ {5, 10, 15, 20, 30, 100, 200, 500, 1000}
+- Recall, Recall @  {5, 10, 15, 20, 30, 100, 200, 500, 1000}
+- Average Precision, Average Precision @  {5, 10, 15, 20, 30, 100, 200, 500, 1000}
+- F-score
+
+
+
 ### Toy example
 
 In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) you may find a minimal toy example scenario where you will train a LSVM-GSU model and evaluate it on a testing set. The data of this toy example are under [toy_example/data/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example/data). To run the toy example code, execute the BASH shell-script `run_toy_example.sh` (after making it executable by `chmod +xrun_toy_example.sh `).
