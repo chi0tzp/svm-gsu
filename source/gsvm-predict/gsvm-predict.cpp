@@ -54,9 +54,14 @@ int main(int argc, char *argv[])
     if (params.getVerbose() == 1)
     {
         cout << ("************************************************************************\n"
-                 "LIBSVMGSU: A framework for training/testing the Support Vector Machine\n"
-                 "           with Gaussian Sample Uncertainty (SVM-GSU).\n"
-                 " ++ gsvm-predict: Evaluate a trained SVM-GSU model.\n"
+                 "* svm-gsu: A framework for training/testing the Support Vector Machine *\n"
+                 "*          with Gaussian Sample Uncertainty (SVM-GSU).                 *\n"
+                 "*  -- gsvm-predict: Evaluate a trained SVM-GSU model.                  *\n"
+                 "*----------------------------------------------------------------------*\n"
+                 "* Version : 0.1                                                        *\n"
+                 "* Author  : Christos Tzelepis                                          *\n"
+                 "* Contact : tzelepis@iti.gr                                            *\n"
+                 "* GitHub  : @chi0tzp                                                   *\n"
                  "************************************************************************\n");
     }
 
@@ -68,35 +73,31 @@ int main(int argc, char *argv[])
     SvmGsuProblem prob(params);
 
     /* Read input data */
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         read_data_start = high_resolution_clock::now();
-        cout << "  -- Read input data...";
+        cout << ".Read input data...";
     }
 
     prob.readInputData(mean_vectors_filename, labels_filename);
 
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         read_data_end = high_resolution_clock::now();
         cout << "Done! [Elapsed time: ";
         getElapsedTime( duration_cast<seconds>(read_data_end-read_data_start).count() );
         cout << "]" << endl;
-        cout << "     -- l = " << prob.getL() << endl;
-        cout << "     -- dim = " << prob.getProbDim() << endl;
+        cout << " \\__l = " << prob.getL() << endl;
+        cout << " \\__dim = " << prob.getProbDim() << endl;
     }
 
     /* Predict */
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         predict_start = high_resolution_clock::now();
-        cout << "  -- Predict...";
+        cout << ".Predict...";
     }
 
     vector<OutputScore> output = prob.predict();
 
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         predict_end = high_resolution_clock::now();
         cout << "Done! [Elapsed time: ";
         getElapsedTime(duration_cast<seconds>(predict_end-predict_start).count());
@@ -104,16 +105,14 @@ int main(int argc, char *argv[])
     }
 
     /* Write output file */
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         write_output_start = high_resolution_clock::now();
-        cout << "  -- Write output file...";
+        cout << ".Write output file...";
     }
 
     prob.writeOutputFile(output, output_filename);
 
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         write_output_end = high_resolution_clock::now();
         cout << "Done! [Elapsed time: ";
         getElapsedTime(duration_cast<seconds>(write_output_end-write_output_start).count());
@@ -121,25 +120,23 @@ int main(int argc, char *argv[])
     }
 
     /* Compute and write evaluation metrics */
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         comp_metrics_start = high_resolution_clock::now();
-        cout << "  -- Compute and write evaluation metrics file...";
+        cout << ".Compute and write evaluation metrics file...";
     }
 
     EvaluationMetrics eval(output);
     eval.writeEvaluationMetrics(evaluation_metrics_filename);
 
-    if (params.getVerbose())
-    {
+    if (params.getVerbose()){
         comp_metrics_end = high_resolution_clock::now();
         cout << "Done! [Elapsed time: ";
         getElapsedTime(duration_cast<seconds>(comp_metrics_end-comp_metrics_start).count());
         cout << "]" << endl;
-        cout << "     -- Accuracy          : " << eval.getAcc() << endl;
-        cout << "     -- Average Precision : " << eval.getAP() << endl;
-        cout << "     -- Precision         : " << eval.getPrec() << endl;
-        cout << "     -- Recall            : " << eval.getRecall() << endl;
+        cout << " \\__Accuracy          : " << eval.getAcc() << endl;
+        cout << " \\__Average Precision : " << eval.getAP() << endl;
+        cout << " \\__Precision         : " << eval.getPrec() << endl;
+        cout << " \\__Recall            : " << eval.getRecall() << endl;
     }
 
     return 0;
