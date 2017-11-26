@@ -31,6 +31,10 @@ output_dir="./output"
 bin_dir_train=../build/gsvm-train
 bin_dir_predict=../build/gsvm-predict
 
+# Make output directories, if ther do not already exist
+mkdir -p ${models_dir}
+mkdir -p ${output_dir}
+
 if [[ ${kernel} -eq 0 ]];
 then
     kernel_type="linear"
@@ -59,7 +63,7 @@ train_labels="${data_dir}/labels.dat"
 train_cov_mat="${data_dir}/cov_${cov_mat}.dat"
 train_model_file="${models_dir}/svmgsu_${kernel_type}_${cov_mat}_T${T}_k${k}_l${lambda}.model"
 
-# Testing files (use )
+# Testing files
 test_mean_vec="${data_dir}/mean.dat"
 test_labels="${data_dir}/labels.dat"
 test_cov_mat="${data_dir}/cov_${cov_mat}.dat"
@@ -85,6 +89,6 @@ echo -n "Re-build gsvm-predict..."
 #make clean -C ../build/gsvm-predict
 make -s -C ../build/gsvm-predict && echo "Done!"
 predict_opt="-v ${verb} -t ${test_labels} -m ${test_metrics_file}"
-predict_cmd="${bin_dir_predict}/gsvm-predict ${predict_opt} ${train_mean_vec} ${train_model_file} ${test_output_file}"
+predict_cmd="${bin_dir_predict}/gsvm-predict ${predict_opt} ${test_mean_vec} ${train_model_file} ${test_output_file}"
 echo "Run gsvm-predict..."
 eval ${predict_cmd}
