@@ -129,17 +129,17 @@ After the training process of an SVM-GSU (linear or with the RBF kernel) is comp
 
 #### Linear model file (example)
 
-As an example, the following linear model file describes a trained LSVM-GSU that has been trained using diagonal covariance matrices, `T=1000` SGD iterations and `k=10` examples per each iteration, and a regularization parameter `lambda=100.` The parameters `sigmA` and `sigmB` refer to the Platt scaling method used for transforming the outputs of the classifier (i.e., the decision values) into a probability distribution over classes (i.e., so as to be interpreted as a-posteriori probabilities that the testing samples belong to the classes to which they have been classified -- see Sect. 3.1 of [1]). Finally, the optimal parameters (i.e., the parameters of the separating hyperplane, `w` and `b`), are given in the last two lines of the file:
+As an example, the following linear model file describes a trained LSVM-GSU that has been trained using diagonal covariance matrices and a regularization parameter `lambda=0.001`. The parameters `sigmA` and `sigmB` refer to the Platt scaling method used for transforming the outputs of the classifier (i.e., the decision values) into a probability distribution over classes (i.e., so as to be interpreted as a-posteriori probabilities that the testing samples belong to the classes to which they have been classified -- see Sect. 3.1 of [1]). Finally, the optimal parameters (i.e., the parameters of the separating hyperplane, `w` and `b`), are given in the last two lines of the file:
 
 ~~~
 SVM-GSU Model_File
 kernel_type linear
-lambda 100
-sigmA -22.0186
-sigmB -2.3374
+lambda 0.001
+sigmA -2.95902
+sigmB -0.39186
 cov_mat_type diagonal
-w 0.0150138 0.0116311 0.00887193 0.00982599 0.0124118 0.0104942 0.0108264 0.0120473 0.00936632 0.0133811 0.0101319 0.0148072 0.00840837 0.0109078 0.0155783 0.0124124
-b -0.00285747
+w -0.524532 -0.417788 -0.326734 -0.195085 0.0383208 0.615655 0.3713 0.626657 0.047698 -0.291463 0.676643 0.573381 0.356931 0.631038 0.807489 -0.781862
+b -0.507318
 ~~~
 
 #### Kernel model file (example)
