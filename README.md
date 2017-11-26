@@ -166,7 +166,7 @@ Options:
 -v <verbose_mode>: Verbose mode (default: 0)
 -t <kernel_type>: Set type of kernel function (default 0)
 	0 -- Linear kernel
-    2 -- Radial Basis Function (RBF) kernel
+	2 -- Radial Basis Function (RBF) kernel
 -d <cov_mat>: Select covariance matrices type (default: 0)
 	0 -- Full covariance matrices
 	1 -- Diagonal covariance matrices
