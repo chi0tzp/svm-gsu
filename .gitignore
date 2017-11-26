@@ -2,11 +2,12 @@
 *~
 tmp/
 
-
 # gsvm-train
 source/gsvm-train/gsvm-train.pro
 source/gsvm-train/gsvm-train.pro.user
 source/gsvm-train/*.o
+source/gsvm-train/Makefile
+source/gsvm-train/.qmake.stash
 build/gsvm-train/gsvm-train
 build/gsvm-train/*.o
 build/gsvm-train/.qmake.stash
@@ -16,6 +17,8 @@ build/gsvm-train/.directory
 source/gsvm-predict/gsvm-predict.pro
 source/gsvm-predict/gsvm-predict.pro.user
 source/gsvm-predict/*.o
+source/gsvm-predict/Makefile
+source/gsvm-predict/.qmake.stash
 build/gsvm-predict/gsvm-predict
 build/gsvm-predict/*.o
 build/gsvm-predict/.qmake.stash
