@@ -1,7 +1,6 @@
 #!/bin/bash
 ################################################################################
 # svm-gsu: toy example                                                         #
-# This is a toy example ...                                                                             #
 #                                                                              #
 # [1] C. Tzelepis, V. Mezaris, I. Patras, "Linear Maximum Margin Classifier    #
 # for Learning from Uncertain Data", IEEE Transactions on Pattern Analysis and #
