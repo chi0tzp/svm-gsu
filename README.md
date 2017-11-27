@@ -211,10 +211,6 @@ In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) yo
 
 ## References
 
-[1] C. Tzelepis, V. Mezaris, I. Patras, *"Linear Maximum Margin Classifier for Learning from Uncertain Data"*, IEEE Transactions on Pattern Analysis and Machine Intelligence, accepted for publication. [DOI:10.1109/TPAMI.2017.2772235](http://ieeexplore.ieee.org/document/8103808/). 
+[1] C. Tzelepis, V. Mezaris, I. Patras, *"Linear Maximum Margin Classifier for Learning from Uncertain Data"*, IEEE Transactions on Pattern Analysis and Machine Intelligence, accepted for publication. [DOI:10.1109/TPAMI.2017.2772235](http://ieeexplore.ieee.org/document/8103808/). Alternate preprint version available [here](https://www.researchgate.net/publication/275054882_Linear_Maximum_Margin_Classifier_for_Learning_from_Uncertain_Data).
 
-Alternate preprint version available [here](https://www.researchgate.net/publication/275054882_Linear_Maximum_Margin_Classifier_for_Learning_from_Uncertain_Data).
-
-[2] C. Tzelepis, V. Mezaris, I. Patras, "*Video Event Detection using Kernel Support Vector Machine with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU)*", Proc. 22nd Int. Conf. on MultiMedia Modeling (MMM'16), Miami, FL, USA, Springer LNCS vol. 9516, pp. 3-15, Jan. 2016. [DOI:10.1007/978-3-319-27671-7_1](https://doi.org/10.1007/978-3-319-27671-7_1). 
-
-Alternate preprint version available [here](https://www.researchgate.net/publication/302103593_Video_Event_Detection_using_Kernel_Support_Vector_Machine_with_Isotropic_Gaussian_Sample_Uncertainty_KSVM-iGSU).
+[2] C. Tzelepis, V. Mezaris, I. Patras, "*Video Event Detection using Kernel Support Vector Machine with Isotropic Gaussian Sample Uncertainty (KSVM-iGSU)*", Proc. 22nd Int. Conf. on MultiMedia Modeling (MMM'16), Miami, FL, USA, Springer LNCS vol. 9516, pp. 3-15, Jan. 2016. [DOI:10.1007/978-3-319-27671-7_1](https://doi.org/10.1007/978-3-319-27671-7_1). Alternate preprint version available [here](https://www.researchgate.net/publication/302103593_Video_Event_Detection_using_Kernel_Support_Vector_Machine_with_Isotropic_Gaussian_Sample_Uncertainty_KSVM-iGSU).
