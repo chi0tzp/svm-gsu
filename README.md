@@ -219,5 +219,5 @@ In [toy_example/](https://github.com/chi0tzp/svm-gsu/tree/master/toy_example) yo
 
 ## Acknowledgment
 
-This work was supported by the EU's Horizon 2020 programme H2020-693092 [MOVING](moving-project.eu/).
+This work was supported by the EU's Horizon 2020 programme H2020-693092 [MOVING](http://moving-project.eu/).
 
