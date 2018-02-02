@@ -30,8 +30,10 @@ class SvmGsuProblem
         void eigenDecomp();
 
         /* Solvers */
-        void solveLSVMGSUxSpace();
-        void solveLSVMGSUzSpace();
+        void solveLSVMGSUxSpace();  //
+        void solveLSVMGSUzSpace();  //
+        void solveKSVMiGSU();       //
+        void computeKernelMatrix(); // Compute kernel matrix
 
         /* Write linear model file */
         void writeLinearModelFile(char *);
@@ -63,16 +65,13 @@ class SvmGsuProblem
         Eigen::VectorXd computeSumOfLossGradFullXspace(Eigen::VectorXd, double, vector<int>);
         Eigen::VectorXd computeSumOfLossGradDiagXspace(Eigen::VectorXd, double, vector<int>);
         Eigen::VectorXd computeSumOfLossGradIsoXspace(Eigen::VectorXd, double, vector<int>);
+        Eigen::VectorXd computeSumOfLossGradKSVMiGSU(Eigen::VectorXd, double, vector<int>);
 
         // -- Models --
-
-
-        // Linear model: w^T*x + b = 0
-        Eigen::VectorXd w;     // Normal vector to H: w^T*x + b = 0
-        double b;              // Bias term of H: w^T*x + b = 0
-        Eigen::MatrixXd K;     // Kernel matrix
-        Eigen::VectorXd alpha; //
-
+        Eigen::VectorXd w;       // Normal vector to H: w^T*x + b = 0
+        double b;                // Bias term of H: w^T*x + b = 0
+        Eigen::MatrixXd K;       // Kernel matrix
+        Eigen::VectorXd alpha;   // KSVM-iGSU's alpha coefficients
 
         /*******************************************************************************
          *                        Learning in linear subspaces                         *
@@ -99,6 +98,7 @@ class SvmGsuProblem
         void tokenize(const string&, vector<string>&, const string&);
         vector<string> findDocIdsIntersection( vector<string>, vector<string>);
         void initW(int, double);
+        void initAlpha(int, double);
         void computeDecValues();
         void plattScaling();
 

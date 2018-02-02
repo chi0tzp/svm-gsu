@@ -635,7 +635,7 @@ void SvmGsuProblem::solveLSVMGSUxSpace()
     T = params.getT();
     k = params.getK();
 
-    /* Initialize linear model w = (w_1, w_2, ..., w_dim, b)^T, b */
+    /* Initialize linear model w = (w_1, w_2, ..., w_dim)^T, b */
     initW(dim, params.getLambda());
     b = 0.0;
 
@@ -973,6 +973,131 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagZspace(Eigen::VectorXd w,
     return sumdL;
 }
 
+/* Compute kernel matrix */
+void SvmGsuProblem::computeKernelMatrix()
+{
+    // TODO: Implement!
+    Eigen::MatrixXd D;
+    D.setRandom(l, l);
+    K.setZero(l, l);
+    Eigen::MatrixXd X;
+    X.setZero(l, dim);
+    for (int i=0; i<l; i++)
+        X.row(i) = x[i];
+
+    K = exp(D.array());
+
+    for (int i=0; i<l; i++){
+        Eigen::VectorXd x_i = X.row(i);
+        for (int j=0; j<l; j++){
+            Eigen::VectorXd x_j = X.row(j);
+            K(i, j) = exp(-params.getGamma() * (x_i-x_j).squaredNorm());
+        }
+    }
+
+}
+
+
+/* Solve the KSVM-iGSU */
+void SvmGsuProblem::solveKSVMiGSU()
+{
+    int T, k;
+
+    /* Get number of iterations T, sampling size k */
+    T = params.getT();
+    k = params.getK();
+
+    /* Initialize KSVM-iGSU's alpha = (alpha_1, alpha_2, ..., alpha_l)^T, b */
+    initAlpha(l, params.getLambda());
+    b = 0.0;
+
+    vector<int> ids_t(l);
+    iota(ids_t.begin(), ids_t.end(), 0);
+
+    double eta_t = 1.0;
+    Eigen::VectorXd sumdLH(l + 1);
+    sumdLH.setZero(l + 1);
+
+    // Define aux. optimization variables
+    Eigen::VectorXd sumdLHdalpha(l);
+    sumdLHdalpha.setZero(l);
+    double sumdLHdb = 0.0;
+
+    /* SGD iteration */
+    for (int t=1; t<=T; t++){
+
+        // Get random subset of training examples' indices (ids_t)
+        auto engine = std::default_random_engine{};
+        std::shuffle(std::begin(ids_t), std::end(ids_t), engine);
+        vector<int> ids_k(ids_t.begin(), ids_t.begin()+k);
+
+        // Learning rate
+        eta_t = 1.0/(params.getLambda() * (double)t);
+
+        // Compute sum of gradients of loss function
+        sumdLH = computeSumOfLossGradKSVMiGSU(alpha, b, ids_k);
+        sumdLHdalpha = sumdLH.block(0, 0, l, 1);
+        sumdLHdb = sumdLH[l];
+
+        // Update optimization variables
+        alpha = alpha - (1.0 / ((double)t)) * (K * alpha) - (eta_t / ((double)k)) * sumdLHdalpha;
+        alpha = min( 1.0, 1.0/sqrt(params.getLambda() * alpha.squaredNorm()) ) * alpha;
+        b = b + 0.5 * (eta_t / ((double)k)) * sumdLHdb;
+    }
+
+    /* Compute decision values and apply Platt scaling*/
+    computeDecValues();
+    plattScaling();
+}
+
+/*  */
+Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradKSVMiGSU(Eigen::VectorXd alpha,
+                                                            double b,
+                                                            vector<int> ids)
+{
+    Eigen::VectorXd K_i;
+    Eigen::VectorXd sumdLH(l + 1);
+    Eigen::VectorXd sumdLHdalpha(l);
+    double sumdLHdb;
+    double aKa;
+    double d_mu;
+    double d_sigma;
+    double r;
+    double erf_;
+    double exp_;
+
+    sumdLH.setZero(l + 1);
+    sumdLHdalpha.setZero(l);
+    sumdLHdb = 0.0;
+    K_i.setZero(l);
+    aKa = alpha.transpose() * K * alpha;
+    d_mu = 0.0;
+    d_sigma = 0.0;
+    r = 0.0;
+    erf_ = 0.0;
+    exp_ = 0.0;
+
+    int i;
+    for (unsigned t=0; t<ids.size(); t++ )
+    {
+        i = ids[t];
+        K_i = K.col(i);
+        d_mu = 1.0 - y[i] * (K.col(i).transpose() * alpha + b);
+        d_sigma = sqrt(2.0 * Sigma_xi[i] * aKa);
+        r = d_mu / d_sigma;
+        erf_ = erf(r);
+        exp_ = exp(-r * r);
+        // Derivative of loss wrt alpha
+        sumdLHdalpha += (exp_ / (sqrt(M_PI) * d_sigma)) * (K * alpha) - 0.5 * (erf_ + 1.0) * K_i;
+        // Derivative of loss wrt b
+        sumdLHdb -= 0.5 * (erf_ + 1.0);
+    }
+    sumdLH.block(0, 0, l, 1) = sumdLHdalpha;
+    sumdLH[l] = sumdLHdb;
+
+    return sumdLH;
+}
+
 
 
 /*******************************************************************************
@@ -1015,15 +1140,14 @@ void SvmGsuProblem::writeKernelModelFile(char* model_filename)
     m << "sigmB " << sigmB << endl;
     m << "cov_mat_type" << " " << params.getCovMatTypeVerb() << endl;
     m << "SV" << endl;
-    /*
+
     for (int i=0; i<l; i++)
     {
         m << alpha[i];
         for (int j=0; j<dim; j++)
-            m << " " << (j+1) << ":" << X(i,j);
+            m << " " << (j+1) << ":" << x[i][j];
         m << endl;
     }
-    */
     m.close();
 }
 
@@ -1079,7 +1203,7 @@ vector<string> SvmGsuProblem::findDocIdsIntersection(vector<string> A, vector<st
 }
 
 
-/*  */
+/* Initialize LSVM-GSU's w vector */
 void SvmGsuProblem::initW(int d, double lambda)
 {
     w.resize(d);
@@ -1092,6 +1216,22 @@ void SvmGsuProblem::initW(int d, double lambda)
 
     for (int j=0; j<d; j++)
         w[j] = unif(re);
+}
+
+
+/* Initialize KSVM-iGSU's alpha vector */
+void SvmGsuProblem::initAlpha(int d, double lambda)
+{
+    alpha.resize(d);
+    alpha.setZero(d);
+
+    double lower_bound = -1.0/sqrt(lambda * d);
+    double upper_bound = +1.0/sqrt(lambda * d);
+    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+    std::default_random_engine re;
+
+    for (int j=0; j<d; j++)
+        alpha[j] = unif(re);
 }
 
 

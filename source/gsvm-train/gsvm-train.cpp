@@ -183,8 +183,8 @@ int main(int argc, char* argv[])
         }
         else if (params.getKernelType() == 2){
             // TODO:
-            // prob.computeKernelMatrix();
-            // prob.solveKSVMiGSU();
+            prob.computeKernelMatrix();
+            prob.solveKSVMiGSU();
         }
 
 
