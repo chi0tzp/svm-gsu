@@ -736,15 +736,13 @@ void SvmGsuProblem::solveLSVMGSUxSpace()
 
 
 /*  */
-Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradFullXspace(Eigen::VectorXd w,
-                                                              double b,
-                                                              vector<int> ids)
+Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradFullXspace(Eigen::VectorXd w, double b, vector<int> ids)
 {
-    Eigen::VectorXd sumdL(dim+1);
+    Eigen::VectorXd sumdL(dim + 1);
     Eigen::VectorXd sumdLdw(dim);
     double sumdLdb;
 
-    sumdL.setZero(dim+1);
+    sumdL.setZero(dim + 1);
     sumdLdw.setZero(dim);
     sumdLdb = 0.0;
 
@@ -758,15 +756,16 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradFullXspace(Eigen::VectorXd w,
     for (unsigned t=0; t<ids.size(); t++ )
     {
         i = ids[t];
-        d_mu = y[i] - w.transpose()*x[i] - b;
-        d_sigma = w.transpose() * Sigma_xf[i] * w;
+        d_mu = 1.0 - y[i] * (w.transpose()*x[i] + b);
+        d_sigma = sqrt(2.0 * w.transpose() * Sigma_xf[i] * w);
         r = d_mu / d_sigma;
-        erf_ = erf(0.5*sqrt(2.0)*r);
-        exp_ = exp(-0.5 * r * r);
+        erf_ = erf(r);
+        exp_ = exp(-(r * r));
         // Derivative of loss wrt w
-        sumdLdw += (exp_ / (sqrt(2.0*M_PI) * d_sigma)) * Sigma_xf[i]*w - 0.5 * (erf_ + y[i]) * x[i];
+        sumdLdw += (exp_ / (sqrt(M_PI) * d_sigma)) * (Sigma_xf[i] * w) \
+                - 0.5 * y[i] * (erf_ + 1.0) * x[i];
         // Derivative of loss wrt b
-        sumdLdb -= 0.5 * (erf_ + y[i]);
+        sumdLdb -= 0.5 * y[i] * (erf_ + 1.0);
     }
     sumdL.block(0,0,dim,1) = sumdLdw;
     sumdL[dim] = sumdLdb;
@@ -776,16 +775,14 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradFullXspace(Eigen::VectorXd w,
 
 
 /*  */
-Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagXspace(Eigen::VectorXd w,
-                                                              double b,
-                                                              vector<int> ids)
+Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagXspace(Eigen::VectorXd w, double b, vector<int> ids)
 {
-    Eigen::VectorXd sumdL(dim+1);
+    Eigen::VectorXd sumdL(dim + 1);
     Eigen::VectorXd sumdLdw(dim);
     Eigen::VectorXd w_sq(dim);
     double sumdLdb;
 
-    sumdL.setZero(dim+1);
+    sumdL.setZero(dim + 1);
     sumdLdw.setZero(dim);
     w_sq.setZero(dim);
     sumdLdb = 0.0;
@@ -800,16 +797,17 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagXspace(Eigen::VectorXd w,
     for (unsigned t=0; t<ids.size(); t++ )
     {
         i = ids[t];
-        d_mu = y[i] - w.transpose()*x[i] - b;
+        d_mu = 1.0 - y[i] * (w.transpose()*x[i] + b);
         w_sq = w.array().square();
-        d_sigma = sqrt(Sigma_xd[i].transpose() * w_sq);
+        d_sigma = sqrt(2.0 * Sigma_xd[i].transpose() * w_sq);
         r = d_mu / d_sigma;
-        erf_ = erf(0.5*sqrt(2.0)*r);
-        exp_ = exp(-0.5 * r * r);
+        erf_ = erf(r);
+        exp_ = exp(-(r * r));
         // Derivative of loss wrt w
-        sumdLdw += (exp_ / (sqrt(2.0*M_PI) * d_sigma))*(Sigma_xd[i].cwiseProduct(w)) - 0.5 * (erf_ + y[i]) * x[i];
+        sumdLdw += (exp_ / (sqrt(M_PI) * d_sigma)) * (Sigma_xd[i].cwiseProduct(w)) \
+                - 0.5 * y[i] * (erf_ + 1.0) * x[i];
         // Derivative of loss wrt b
-        sumdLdb -= 0.5 * (erf_ + y[i]);
+        sumdLdb -= 0.5 * y[i] * (erf_ + 1.0);
     }
     sumdL.block(0,0,dim,1) = sumdLdw;
     sumdL[dim] = sumdLdb;
@@ -819,16 +817,14 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagXspace(Eigen::VectorXd w,
 
 
 /*  */
-Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradIsoXspace(Eigen::VectorXd w,
-                                                             double b,
-                                                             vector<int> ids)
+Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradIsoXspace(Eigen::VectorXd w, double b, vector<int> ids)
 {
-    Eigen::VectorXd sumdL(dim+1);
+    Eigen::VectorXd sumdL(dim + 1);
     Eigen::VectorXd sumdLdw(dim);
     Eigen::VectorXd w_sq(dim);
     double sumdLdb;
 
-    sumdL.setZero(dim+1);
+    sumdL.setZero(dim + 1);
     sumdLdw.setZero(dim);
     w_sq.setZero(dim);
     sumdLdb = 0.0;
@@ -843,15 +839,16 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradIsoXspace(Eigen::VectorXd w,
     for (unsigned t=0; t<ids.size(); t++ )
     {
         i = ids[t];
-        d_mu = y[i] - w.transpose()*x[i] - b;
-        d_sigma = sqrt(Sigma_xi[i]) * w.norm();
+        d_mu = 1.0 - y[i] * (w.transpose()*x[i] + b);
+        d_sigma = sqrt(2.0 * Sigma_xi[i] * w.squaredNorm());
         r = d_mu / d_sigma;
-        erf_ = erf(0.5*sqrt(2.0)*r);
-        exp_ = exp(-0.5 * r * r);
+        erf_ = erf(r);
+        exp_ = exp(-(r * r));
         // Derivative of loss wrt w
-        sumdLdw += (exp_ / (sqrt(2.0*M_PI) * d_sigma)) * (Sigma_xi[i] * w) - 0.5 * (erf_ + y[i]) * x[i];
+        sumdLdw += (exp_ / (sqrt(M_PI) * d_sigma)) * (Sigma_xi[i] * w) \
+                - 0.5 * y[i] * (erf_ + 1.0) * x[i];
         // Derivative of loss wrt b
-        sumdLdb -= 0.5 * (erf_ + y[i]);
+        sumdLdb -= 0.5 * y[i] * (erf_ + 1.0);
     }
     sumdL.block(0,0,dim,1) = sumdLdw;
     sumdL[dim] = sumdLdb;
@@ -914,11 +911,9 @@ void SvmGsuProblem::solveLSVMGSUzSpace()
 
 
 /*  */
-Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagZspace(Eigen::VectorXd w,
-                                                              double b,
-                                                              vector<int> ids)
+Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagZspace(Eigen::VectorXd w, double b, vector<int> ids)
 {
-    Eigen::VectorXd sumdL(dim+1);
+    Eigen::VectorXd sumdL(dim + 1);
     Eigen::VectorXd sumdLdw(dim);
     Eigen::VectorXd w_sq(dim);
     double sumdLdb;
@@ -946,26 +941,24 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagZspace(Eigen::VectorXd w,
         Eigen::VectorXd v = Sigma_zd[i].cwiseProduct(w_z);
         PSw.setZero(dim);
         Pzi.setZero(dim);
-        for (unsigned j=0; j<axes.size(); j++)
-        {
+        for (unsigned j=0; j<axes.size(); j++){
             w_z(j) = w(axes[j]);
             PSw(axes[j]) = v(j);
             Pzi(axes[j]) = z[i][j];
         }
-
-        d_mu = y[i] - z[i].transpose()*w_z - b;
+        d_mu = 1.0 - y[i] * (z[i].transpose()*w_z + b);
         w_sq = w_z.array().square();
-        d_sigma = sqrt(Sigma_zd[i].transpose() * w_sq);
+        d_sigma = sqrt(2.0 * Sigma_zd[i].transpose() * w_sq);
         r = d_mu / d_sigma;
-        erf_ = erf(0.5*sqrt(2.0)*r);
-        exp_ = exp(-0.5 * r * r);
+        erf_ = erf(r);
+        exp_ = exp(-(r * r));
 
         // Derivative of loss wrt w
-        sumdLdw += (exp_ / (sqrt(2.0*M_PI) * d_sigma))*PSw
-                - 0.5 * (erf_ + y[i]) * Pzi;
+        sumdLdw += (exp_ / (sqrt(M_PI) * d_sigma))*PSw \
+                - 0.5 * y[i] * (erf_ + 1.0) * Pzi;
 
         // Derivative of loss wrt b
-        sumdLdb -= 0.5 * (erf_ + y[i]);
+        sumdLdb -= 0.5 * y[i] * (erf_ + 1.0);
     }
     sumdL.block(0,0,dim,1) = sumdLdw;
     sumdL[dim] = sumdLdb;
@@ -976,25 +969,11 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradDiagZspace(Eigen::VectorXd w,
 /* Compute kernel matrix */
 void SvmGsuProblem::computeKernelMatrix()
 {
-    // TODO: Implement!
-    Eigen::MatrixXd D;
-    D.setRandom(l, l);
+    // TODO:
     K.setZero(l, l);
-    Eigen::MatrixXd X;
-    X.setZero(l, dim);
     for (int i=0; i<l; i++)
-        X.row(i) = x[i];
-
-    K = exp(D.array());
-
-    for (int i=0; i<l; i++){
-        Eigen::VectorXd x_i = X.row(i);
-        for (int j=0; j<l; j++){
-            Eigen::VectorXd x_j = X.row(j);
-            K(i, j) = exp(-params.getGamma() * (x_i-x_j).squaredNorm());
-        }
-    }
-
+        for (int j=0; j<l; j++)
+            K(i, j) = exp(-params.getGamma() * (x[i] - x[j]).squaredNorm());
 }
 
 
@@ -1009,12 +988,13 @@ void SvmGsuProblem::solveKSVMiGSU()
 
     /* Initialize KSVM-iGSU's alpha = (alpha_1, alpha_2, ..., alpha_l)^T, b */
     initAlpha(l, params.getLambda());
+    //alpha.setRandom(l);
+    //alpha = 0.1 * alpha;
     b = 0.0;
 
     vector<int> ids_t(l);
     iota(ids_t.begin(), ids_t.end(), 0);
 
-    double eta_t = 1.0;
     Eigen::VectorXd sumdLH(l + 1);
     sumdLH.setZero(l + 1);
 
@@ -1024,6 +1004,8 @@ void SvmGsuProblem::solveKSVMiGSU()
     double sumdLHdb = 0.0;
 
     /* SGD iteration */
+    double eta_0 = 0.001;
+    double eta_t = eta_0;
     for (int t=1; t<=T; t++){
 
         // Get random subset of training examples' indices (ids_t)
@@ -1033,6 +1015,8 @@ void SvmGsuProblem::solveKSVMiGSU()
 
         // Learning rate
         eta_t = 1.0/(params.getLambda() * (double)t);
+        //eta_t = eta_0 / ((double)t);
+        // eta_t = eta_0 * exp(-0.01 * (double)t);
 
         // Compute sum of gradients of loss function
         sumdLH = computeSumOfLossGradKSVMiGSU(alpha, b, ids_k);
@@ -1040,9 +1024,10 @@ void SvmGsuProblem::solveKSVMiGSU()
         sumdLHdb = sumdLH[l];
 
         // Update optimization variables
-        alpha = alpha - (1.0 / ((double)t)) * (K * alpha) - (eta_t / ((double)k)) * sumdLHdalpha;
-        alpha = min( 1.0, 1.0/sqrt(params.getLambda() * alpha.squaredNorm()) ) * alpha;
-        b = b + 0.5 * (eta_t / ((double)k)) * sumdLHdb;
+        alpha = alpha - params.getLambda() * eta_t * (K * alpha) - (eta_t / ((double)k)) * sumdLHdalpha;
+        alpha = min(1.0, 1.0/sqrt(params.getLambda() * alpha.squaredNorm())) * alpha;
+        b = b - (eta_t / ((double)k)) * sumdLHdb;
+        //b = min( 1.0, 1.0/sqrt(params.getLambda() * b * b) ) * b;
     }
 
     /* Compute decision values and apply Platt scaling*/
@@ -1056,41 +1041,46 @@ Eigen::VectorXd SvmGsuProblem::computeSumOfLossGradKSVMiGSU(Eigen::VectorXd alph
                                                             vector<int> ids)
 {
     Eigen::VectorXd K_i;
-    Eigen::VectorXd sumdLH(l + 1);
-    Eigen::VectorXd sumdLHdalpha(l);
-    double sumdLHdb;
-    double aKa;
-    double d_mu;
-    double d_sigma;
-    double r;
-    double erf_;
-    double exp_;
-
-    sumdLH.setZero(l + 1);
-    sumdLHdalpha.setZero(l);
-    sumdLHdb = 0.0;
     K_i.setZero(l);
-    aKa = alpha.transpose() * K * alpha;
-    d_mu = 0.0;
-    d_sigma = 0.0;
-    r = 0.0;
-    erf_ = 0.0;
-    exp_ = 0.0;
+    Eigen::VectorXd sumdLH(l + 1);
+    sumdLH.setZero(l + 1);
+    Eigen::VectorXd sumdLHdalpha(l);
+    sumdLHdalpha.setZero(l);
+    double sumdLHdb = 0.0;
+    double aKa = alpha.transpose() * K * alpha;
+    Eigen::VectorXd Ka = K * alpha;
+    double d_mu = 0.0;
+    double d_sigma = 0.0;
+    double r = 0.0;
+    double erf_ = 0.0;
+    double exp_ = 0.0;
 
     int i;
-    for (unsigned t=0; t<ids.size(); t++ )
+    for (unsigned t=0; t<ids.size(); t++)
     {
         i = ids[t];
         K_i = K.col(i);
-        d_mu = 1.0 - y[i] * (K.col(i).transpose() * alpha + b);
+        d_mu = 1.0 - y[i] * (K_i.transpose() * alpha + b);
         d_sigma = sqrt(2.0 * Sigma_xi[i] * aKa);
         r = d_mu / d_sigma;
         erf_ = erf(r);
-        exp_ = exp(-r * r);
+        exp_ = exp(-(r * r));
         // Derivative of loss wrt alpha
-        sumdLHdalpha += (exp_ / (sqrt(M_PI) * d_sigma)) * (K * alpha) - 0.5 * (erf_ + 1.0) * K_i;
+        sumdLHdalpha += (exp_ / (sqrt(M_PI) * d_sigma)) * Sigma_xi[i] * Ka \
+                - 0.5 * y[i] * (erf_ + 1.0) * K_i;
         // Derivative of loss wrt b
-        sumdLHdb -= 0.5 * (erf_ + 1.0);
+        sumdLHdb -= 0.5 * y[i] * (erf_ + 1.0);
+
+        /*
+        if (1.0 - y[i] * (K_i.transpose() * alpha + b) > 0)
+        {
+            sumdLHdalpha += -y[i] * K_i;
+            sumdLHdb += -y[i];
+        }
+        */
+
+
+
     }
     sumdLH.block(0, 0, l, 1) = sumdLHdalpha;
     sumdLH[l] = sumdLHdb;
@@ -1158,7 +1148,7 @@ void SvmGsuProblem::writeKernelModelFile(char* model_filename)
  *                          [ Auxiliary Functions ]                            *
  *                                                                             *
  *******************************************************************************/
-/*  */
+/* Get truth label */
 double SvmGsuProblem::getLabel(double t){return (t>0.0 ? +1.0 : -1.0);}
 
 
@@ -1227,7 +1217,7 @@ void SvmGsuProblem::initAlpha(int d, double lambda)
 
     double lower_bound = -1.0/sqrt(lambda * d);
     double upper_bound = +1.0/sqrt(lambda * d);
-    std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
+    std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
     std::default_random_engine re;
 
     for (int j=0; j<d; j++)
@@ -1235,7 +1225,7 @@ void SvmGsuProblem::initAlpha(int d, double lambda)
 }
 
 
-/*  */
+/* Compute decision values */
 void SvmGsuProblem::computeDecValues()
 {
     deci.resize(l);
@@ -1250,16 +1240,15 @@ void SvmGsuProblem::computeDecValues()
             break;
         /* RBF kernel: Optimal variables: a, b */
         case 2:
-            // deci.array() = (K*alpha).array() + b;
+            deci.array() = (K*alpha).array() + b;
             break;
         default:
             break;
     }
-
 }
 
 
-/*  */
+/* Conduct Platt scaling */
 void SvmGsuProblem::plattScaling()
 {
     sigmA = -1.0;
