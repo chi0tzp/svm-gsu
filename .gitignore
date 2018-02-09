@@ -27,6 +27,7 @@ build/gsvm-predict/.directory
 # Toy example
 toy_example/models
 toy_example/output
+toy_example/generate_data/data/
 
 # Visualization tool
 visualization_tool/data/
