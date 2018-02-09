@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
     char covariance_matrices_filename[MAX_FILENAME_LEN];
     char model_filename[MAX_FILENAME_LEN];
 
+
     high_resolution_clock::time_point read_data_start;
     high_resolution_clock::time_point read_data_end;
 
@@ -182,12 +183,9 @@ int main(int argc, char* argv[])
             prob.solveLSVMGSUxSpace();
         }
         else if (params.getKernelType() == 2){
-            // TODO:
             prob.computeKernelMatrix();
             prob.solveKSVMiGSU();
         }
-
-
         if (params.getVerbose() == 1){
             sgd_end = high_resolution_clock::now();
             cout << "Done! [Elapsed time: ";
@@ -225,6 +223,6 @@ void getElapsedTime(int seconds)
 {
     int hours, minutes;
     minutes = seconds / 60;
-    hours   = minutes / 60;
+    hours = minutes / 60;
     cout << int(hours) << "H:" << int(minutes%60) << "M:" << int(seconds%60) << "S";
 }
