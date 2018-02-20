@@ -184,6 +184,7 @@ int main(int argc, char* argv[])
         }
         else if (params.getKernelType() == 2){
             prob.computeKernelMatrix();
+            cout << "kernel matrix computed!" << endl;
             prob.solveKSVMiGSU();
         }
         if (params.getVerbose() == 1){
